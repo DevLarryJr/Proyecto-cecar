@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --green-main: #22C55E;
+    --green-soft: #DCFCE7;
+    --green-light: #86EFAC;
+    --green-hover: #16A34A;
+    --bg-main: #F0FDF4;
+    --text-dark: #064E3B;
+    --text-gray: #4B5563;
+  }
+}
