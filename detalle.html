@@ -8,7 +8,9 @@
     <link href="css/output.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
     </style>
 </head>
 
@@ -19,7 +21,9 @@
         <div class="max-w-4xl mx-auto px-6 flex items-center justify-between">
             <div class="flex items-center text-sm text-brand-main">
                 <a href="solicitudes.html" class="hover:underline transition-colors">Mis Solicitudes</a>
-                <svg class="w-4 h-4 mx-2 text-brand-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg class="w-4 h-4 mx-2 text-brand-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
                 <span class="text-brand-dark font-medium">Detalle #001</span>
             </div>
             <img src="img/logo.png" alt="Logo CECAR" class="h-8 w-auto">
@@ -27,19 +31,20 @@
     </nav>
 
     <main class="max-w-4xl mx-auto px-6 py-10">
-        
+
         <div class="mb-8 flex justify-between items-center">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900">Detalle de Solicitud</h1>
                 <p class="text-gray-500 mt-1">Información detallada y seguimiento del proceso.</p>
             </div>
-            <span class="px-4 py-2 bg-brand-soft text-brand-main text-sm font-bold rounded-xl border border-brand-light shadow-sm">
+            <span
+                class="px-4 py-2 bg-brand-soft text-brand-main text-sm font-bold rounded-xl border border-brand-light shadow-sm">
                 PENDIENTE
             </span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
+
             <!-- INFORMACIÓN PRINCIPAL -->
             <div class="md:col-span-2 space-y-6">
                 <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
@@ -50,7 +55,8 @@
                             <p class="text-gray-900 font-medium text-lg">Juan Pérez</p>
                         </div>
                         <div>
-                            <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mb-1">Fecha de Creación</p>
+                            <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mb-1">Fecha de Creación
+                            </p>
                             <p class="text-gray-900 font-medium">25 de Marzo, 2026</p>
                         </div>
                         <div>
@@ -58,7 +64,8 @@
                             <p class="text-gray-900 font-medium">Departamento de Operaciones</p>
                         </div>
                         <div>
-                            <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mb-1">Centro de Costos</p>
+                            <p class="text-xs uppercase tracking-wider text-gray-400 font-bold mb-1">Centro de Costos
+                            </p>
                             <p class="text-gray-900 font-medium">AD-002 (Administración)</p>
                         </div>
                     </div>
@@ -67,7 +74,8 @@
                 <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
                     <h2 class="text-xl font-bold text-gray-800 mb-6 pb-2 border-b border-gray-50">Justificación</h2>
                     <p class="text-gray-600 leading-relaxed italic">
-                        "Se requiere mantenimiento preventivo para los equipos del área técnica debido a fallas intermitentes reportadas en la última semana..."
+                        "Se requiere mantenimiento preventivo para los equipos del área técnica debido a fallas
+                        intermitentes reportadas en la última semana..."
                     </p>
                 </div>
             </div>
@@ -76,13 +84,18 @@
             <div class="space-y-6">
                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
                     <h2 class="text-lg font-bold text-gray-800 mb-6">Estado del Trámite</h2>
-                    <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-emerald-500 before:via-gray-200 before:to-gray-200">
-                        
+                    <div
+                        class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-emerald-500 before:via-gray-200 before:to-gray-200">
+
                         <!-- STEP 1 -->
                         <div class="relative flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-brand-main text-white shadow-lg shadow-brand-soft z-10">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <div
+                                    class="flex items-center justify-center w-10 h-10 rounded-full bg-brand-main text-white shadow-lg shadow-brand-soft z-10">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
                                 </div>
                                 <div class="ml-4">
                                     <p class="text-sm font-bold text-gray-900">Enviado</p>
@@ -94,7 +107,8 @@
                         <!-- STEP 2 -->
                         <div class="relative flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-white border-4 border-brand-main text-brand-main z-10 shadow-sm">
+                                <div
+                                    class="flex items-center justify-center w-10 h-10 rounded-full bg-white border-4 border-brand-main text-brand-main z-10 shadow-sm">
                                     <div class="w-2 h-2 rounded-full bg-brand-main animate-pulse"></div>
                                 </div>
                                 <div class="ml-4">
@@ -107,7 +121,8 @@
                         <!-- STEP 3 -->
                         <div class="relative flex items-center justify-between">
                             <div class="flex items-center">
-                                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-400 z-10">
+                                <div
+                                    class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-400 z-10">
                                     <div class="w-2 h-2 rounded-full bg-gray-300"></div>
                                 </div>
                                 <div class="ml-4">
@@ -118,10 +133,11 @@
                         </div>
 
                     </div>
-                    
+
                     <div class="mt-8 pt-6 border-t border-gray-50">
                         <p class="text-xs italic text-gray-400">Comentario del revisor:</p>
-                        <p class="mt-2 text-sm text-gray-600 font-medium">"Estamos validando la disponibilidad de fondos en el rubro seleccionado."</p>
+                        <p class="mt-2 text-sm text-gray-600 font-medium">"Estamos validando la disponibilidad de fondos
+                            en el rubro seleccionado."</p>
                     </div>
                 </div>
             </div>

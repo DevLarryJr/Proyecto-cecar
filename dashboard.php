@@ -1,3 +1,7 @@
+<?php
+require_once 'php/Auth.php';
+Auth::requireLogin();
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -5,13 +9,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Proyecto Premium</title>
-    <link href="css/output.css" rel="stylesheet">
+    <link href="css/output.css?v=<?php echo time(); ?>" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
 </head>
 
 <body class="bg-gray-50 min-h-screen text-gray-800">
@@ -26,15 +25,10 @@
                     </div>
                 </div>
                 <div class="flex items-center">
-                    <button class="p-2 text-gray-400 hover:text-brand-main transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                    </button>
+                    <a href="php/logout.php" class="text-sm font-medium text-red-600 hover:text-red-800 mr-4">Cerrar Sesión</a>
                     <div
-                        class="ml-4 flex items-center bg-brand-bg rounded-full px-3 py-1 border border-brand-soft italic font-medium text-brand-main">
-                        Larry Sanchez Vergara
+                        class="flex items-center bg-brand-bg rounded-full px-3 py-1 border border-brand-soft italic font-medium text-brand-main">
+                        <?php echo $_SESSION['usuario']; ?>
                     </div>
                 </div>
             </div>
@@ -46,14 +40,14 @@
         <!-- HEADER -->
         <div class="mb-10">
             <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Panel de Control</h1>
-            <p class="mt-2 text-lg text-gray-500">Gestiona tus procesos de forma rápida y eficiente.</p>
+            <p class="mt-2 text-lg text-gray-500">Bienvenido de nuevo, <?php echo $_SESSION['usuario']; ?>. Gestiona tus procesos de forma rápida y eficiente.</p>
         </div>
 
         <!-- OPCIONES / GRID -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
             <!-- CARD 1 -->
-            <a href="solicitud.html"
+            <a href="solicitud.php"
                 class="group bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:shadow-brand-soft hover:border-brand-light transition-all duration-300 transform hover:-translate-y-2">
                 <div
                     class="w-14 h-14 bg-brand-soft text-brand-main rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-main group-hover:text-white transition-colors duration-300 shadow-sm">
@@ -73,7 +67,7 @@
             </a>
 
             <!-- CARD 2 -->
-            <a href="solicitudes.html"
+            <a href="solicitudes.php"
                 class="group bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:shadow-blue-100 hover:border-blue-200 transition-all duration-300 transform hover:-translate-y-2">
                 <div
                     class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 shadow-sm">

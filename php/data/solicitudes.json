@@ -1,0 +1,27 @@
+[
+    {
+        "nombre": "Larry Sanchez",
+        "dependencia": "Finanzas",
+        "fecha": "2026-04-02",
+        "tipo": "Contrataci\u00f3n",
+        "justificacion": "Interesante",
+        "cargo": "Analista",
+        "archivo": "1775156206_\u00bfC\u00f3mo se utiliza la funci\u00f3n de \u00abReclamaci\u00f3n de herencia\u00bb en Binance_ _ Binance Support.pdf",
+        "servicios_count": 1,
+        "id": "001",
+        "registro_at": "2026-04-02 20:56:46"
+    },
+    {
+        "nombre": "Juan Perez",
+        "dependencia": "Finanzas",
+        "fecha": "2026-04-02",
+        "tipo": "Mantenimiento",
+        "justificacion": "waos",
+        "cargo": "Analista",
+        "archivo": "1775168809_UNIDAD 1. CLASE 2. REGLA DE LA SUSTITUCI\u00d3N.pdf",
+        "servicios_count": 1,
+        "id": "002",
+        "registro_at": "2026-04-03 00:26:49",
+        "estado": "revision"
+    }
+]
