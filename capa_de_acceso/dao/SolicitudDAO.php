@@ -890,7 +890,7 @@ class SolicitudDAO
     {
         $pdo = Database::getConnection();
         $stmt = $pdo->prepare("
-            SELECT DISTINCT
+            SELECT 
                 s.id,
                 s.fecha_solicitud                       AS fecha,
                 s.justificacion,
@@ -907,7 +907,8 @@ class SolicitudDAO
             WHERE  h.usuario_id = ? 
               AND  eh.nombre IN ('aprobado', 'rechazado')
               AND  s.activo = 1
-            ORDER  BY h.fecha DESC
+            GROUP BY s.id
+            ORDER BY s.id DESC
         ");
         $stmt->execute([$adminId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
