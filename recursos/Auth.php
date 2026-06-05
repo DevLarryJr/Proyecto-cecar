@@ -157,22 +157,35 @@ class Auth
 
     /**
      * Devuelve la ruta raíz relativa desde cualquier carpeta.
-     * Estructura esperada:
-     * - raíz: index.php
-     * - nivel 1: negocio/, recursos/
-     * - nivel 2: presentacion/vistas/
+     * Basado en la ubicación física real de los archivos.
      */
     private static function rootPath(): string
     {
-        $scriptPath = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
+        // 1. Obtener la ruta real del directorio de este archivo (recursos/)
+        // y subir un nivel para hallar la raíz del proyecto.
+        $recursosDir = str_replace('\\', '/', realpath(__DIR__));
+        $projectRoot = str_replace('\\', '/', dirname($recursosDir));
         
-        if (strpos($scriptPath, '/presentacion/vistas/') !== false) {
-            return '../../';
-        }
-        if (strpos($scriptPath, '/negocio/') !== false || strpos($scriptPath, '/recursos/') !== false) {
-            return '../';
+        // 2. Obtener la ruta real del directorio del archivo que se está ejecutando.
+        $scriptDir = str_replace('\\', '/', dirname(realpath($_SERVER['SCRIPT_FILENAME'])));
+        
+        // Caso base: estamos en la raíz
+        if ($scriptDir === $projectRoot) {
+            return '';
         }
         
-        return '';
+        // 3. Si el script no es el raíz, calculamos cuántos niveles bajar.
+        // Quitamos la parte del raíz para ver solo las subcarpetas relativas.
+        $relativeDirs = str_replace($projectRoot, '', $scriptDir);
+        $relativeDirs = trim($relativeDirs, '/');
+        
+        if (empty($relativeDirs)) {
+            return '';
+        }
+
+        // Contamos cuántas carpetas hay (ej: "presentacion/vistas" -> 2 carpetas)
+        $levels = count(explode('/', $relativeDirs));
+        
+        return str_repeat('../', $levels);
     }
 }
