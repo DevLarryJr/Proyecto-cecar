@@ -3,7 +3,8 @@
     "description": "Sistema de Gestión de Servicios CECAR",
     "type": "project",
     "require": {
-        "dompdf/dompdf": "^2.0"
+        "dompdf/dompdf": "^2.0",
+        "ext-gd": "*"
     },
     "authors": [
         {
