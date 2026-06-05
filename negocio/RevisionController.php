@@ -8,6 +8,11 @@
 require_once __DIR__ . '/../recursos/Auth.php';
 require_once __DIR__ . '/../capa_de_acceso/dao/SolicitudDAO.php';
 
+// Asegurar limpieza de buffer para respuestas JSON
+if (isset($_POST['ajax']) || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest')) {
+    ob_start();
+}
+
 // ── 1. Verificar sesión y rol Admin ──────────────────────────
 Auth::requireLogin();
 
@@ -22,6 +27,7 @@ $isAjax = isset($_POST['ajax']) || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     if ($isAjax) {
         header('Content-Type: application/json');
+        if (ob_get_length()) ob_clean();
         echo json_encode(['success' => false, 'errors' => ['Método no permitido']]);
         exit();
     }
@@ -37,6 +43,7 @@ if ($solicitudId <= 0 || !in_array($accion, ['aprobar', 'rechazar', 'avanzar'], 
     $msg = 'Datos técnicos faltantes para procesar la revisión.';
     if ($isAjax) {
         header('Content-Type: application/json');
+        if (ob_get_length()) ob_clean();
         echo json_encode(['success' => false, 'errors' => [$msg]]);
         exit();
     }
@@ -49,6 +56,7 @@ $solicitudActual = SolicitudDAO::obtenerPorId($solicitudId);
 if (!$solicitudActual) {
     if ($isAjax) {
         header('Content-Type: application/json');
+        if (ob_get_length()) ob_clean();
         echo json_encode(['success' => false, 'errors' => ['Solicitud no encontrada']]);
         exit();
     }
@@ -63,6 +71,7 @@ if ($accion === 'avanzar') {
     
     if ($isAjax) {
         header('Content-Type: application/json');
+        if (ob_get_length()) ob_clean();
         echo json_encode($res);
         exit();
     }
@@ -79,6 +88,7 @@ if (in_array($solicitudActual['estado'], $estadosNoPermitidos, true)) {
     $msg = 'Esta solicitud ya fue finalizada con estado: ' . $solicitudActual['estado'];
     if ($isAjax) {
         header('Content-Type: application/json');
+        if (ob_get_length()) ob_clean();
         echo json_encode(['success' => false, 'errors' => [$msg]]);
         exit();
     }
@@ -100,6 +110,7 @@ $ok = SolicitudDAO::actualizarEstado(
 if ($ok) {
     if ($isAjax) {
         header('Content-Type: application/json');
+        if (ob_get_length()) ob_clean();
         echo json_encode(['success' => true, 'message' => 'Revisión finalizada con éxito']);
         exit();
     }
@@ -107,6 +118,7 @@ if ($ok) {
 } else {
     if ($isAjax) {
         header('Content-Type: application/json');
+        if (ob_get_length()) ob_clean();
         echo json_encode(['success' => false, 'errors' => ['Error en la base de datos']]);
         exit();
     }
