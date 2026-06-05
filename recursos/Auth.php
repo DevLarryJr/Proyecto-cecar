@@ -14,6 +14,12 @@ class Auth
     public static function init(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
+            // Asegurar que la cookie de sesión sea válida para todo el dominio
+            session_set_cookie_params([
+                'path' => '/',
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]);
             session_start();
         }
     }
@@ -151,27 +157,22 @@ class Auth
 
     /**
      * Devuelve la ruta raíz relativa desde cualquier carpeta.
-     * Los archivos en subcarpetas necesitan subir niveles.
+     * Estructura esperada:
+     * - raíz: index.php
+     * - nivel 1: negocio/, recursos/
+     * - nivel 2: presentacion/vistas/
      */
     private static function rootPath(): string
     {
-        // Calculamos cuántos niveles está el script actual por debajo de la raíz
-        $scriptDir = dirname($_SERVER['SCRIPT_FILENAME']);
-        $rootDir   = realpath(__DIR__ . '/..');
-        $levels    = substr_count(
-            str_replace('\\', '/', $scriptDir),
-            str_replace('\\', '/', $rootDir)
-        );
-
-        // Simple: si está en una subcarpeta, subir un nivel
-        $depth = substr_count(
-            str_replace('\\', '/', realpath($scriptDir)),
-            '/'
-        ) - substr_count(
-            str_replace('\\', '/', $rootDir),
-            '/'
-        );
-
-        return str_repeat('../', max(0, $depth));
+        $scriptPath = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
+        
+        if (strpos($scriptPath, '/presentacion/vistas/') !== false) {
+            return '../../';
+        }
+        if (strpos($scriptPath, '/negocio/') !== false || strpos($scriptPath, '/recursos/') !== false) {
+            return '../';
+        }
+        
+        return '';
     }
 }
