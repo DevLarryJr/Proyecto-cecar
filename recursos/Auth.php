@@ -67,7 +67,7 @@ class Auth
             LEFT JOIN usuario_rol ur ON ur.usuario_id = u.id
             LEFT JOIN roles r        ON r.id = ur.rol_id
             LEFT JOIN dependencias d ON d.id = u.id_dependecia
-            LEFT JOIN mydb.cargo c   ON c.idcargo = u.id_cargo
+            LEFT JOIN cargo c        ON c.idcargo = u.id_cargo
             WHERE  u.email = ?
             LIMIT  1
         ");
