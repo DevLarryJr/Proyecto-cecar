@@ -175,21 +175,17 @@ class Auth
      */
     private static function rootPath(): string
     {
-        // 1. Obtener la ruta real del directorio de este archivo (recursos/)
-        // y subir un nivel para hallar la raíz del proyecto.
         $recursosDir = str_replace('\\', '/', realpath(__DIR__));
         $projectRoot = str_replace('\\', '/', dirname($recursosDir));
+        $scriptDir   = str_replace('\\', '/', dirname(realpath($_SERVER['SCRIPT_FILENAME'])));
         
-        // 2. Obtener la ruta real del directorio del archivo que se está ejecutando.
-        $scriptDir = str_replace('\\', '/', dirname(realpath($_SERVER['SCRIPT_FILENAME'])));
-        
-        // Caso base: estamos en la raíz
+        $logStr = "[DEBUG PATHS] Root: $projectRoot | ScriptDir: $scriptDir";
+        error_log($logStr);
+
         if ($scriptDir === $projectRoot) {
             return '';
         }
         
-        // 3. Si el script no es el raíz, calculamos cuántos niveles bajar.
-        // Quitamos la parte del raíz para ver solo las subcarpetas relativas.
         $relativeDirs = str_replace($projectRoot, '', $scriptDir);
         $relativeDirs = trim($relativeDirs, '/');
         
@@ -197,9 +193,10 @@ class Auth
             return '';
         }
 
-        // Contamos cuántas carpetas hay (ej: "presentacion/vistas" -> 2 carpetas)
         $levels = count(explode('/', $relativeDirs));
+        $result = str_repeat('../', $levels);
         
-        return str_repeat('../', $levels);
+        error_log("[DEBUG RESULT] Relative: $relativeDirs | Levels: $levels | Final: $result");
+        return $result;
     }
 }
