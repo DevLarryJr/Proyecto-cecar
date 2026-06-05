@@ -8,7 +8,7 @@ class Database
 {
     private static ?PDO $instance = null;
 
-    // ── Configuración de conexión ─────────────────────────────
+    // ── Configuración local de respaldo (XAMPP) ───────────────
     private static string $host   = 'localhost';
     private static string $dbname = 'solicitud_final';
     private static string $user   = 'root';
@@ -17,18 +17,27 @@ class Database
 
     /**
      * Devuelve la instancia única de PDO.
-     * La crea la primera vez y la reutiliza en las siguientes.
+     * Usa las variables de entorno de Railway cuando existen.
+     * En local conserva la configuración de XAMPP como respaldo.
      */
     public static function getConnection(): PDO
     {
         if (self::$instance === null) {
             try {
+                $host   = getenv('DB_HOST') ?: self::$host;
+                $port   = getenv('DB_PORT') ?: '3306';
+                $dbname = getenv('DB_NAME') ?: self::$dbname;
+                $user   = getenv('DB_USER') ?: self::$user;
+
+                $passwordFromEnv = getenv('DB_PASSWORD');
+                $pass = $passwordFromEnv !== false
+                    ? $passwordFromEnv
+                    : self::$pass;
+
                 self::$instance = new PDO(
-                    "mysql:host=" . self::$host .
-                    ";dbname="    . self::$dbname .
-                    ";charset=utf8mb4",
-                    self::$user,
-                    self::$pass,
+                    "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4",
+                    $user,
+                    $pass,
                     [
                         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
