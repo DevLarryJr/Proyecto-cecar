@@ -28,8 +28,15 @@ class Auth
     public static function requireLogin(): void
     {
         self::init();
+        $root = self::rootPath();
+        $target = $root . 'index.php';
+        
+        // LOG DE DEPURACIÓN (Temporal para arreglar producción)
+        $logStr = "[DEBUG AUTH] URI: " . $_SERVER['REQUEST_URI'] . " | Root: $root | LoggedID: " . ($_SESSION['usuario_id'] ?? 'NULL');
+        error_log($logStr);
+
         if (!isset($_SESSION['usuario_id'])) {
-            header('Location: ' . self::rootPath() . 'index.php');
+            header('Location: ' . $target);
             exit();
         }
     }
@@ -38,8 +45,15 @@ class Auth
     public static function redirectIfLoggedIn(): void
     {
         self::init();
+        $root = self::rootPath();
+        $target = $root . 'presentacion/vistas/dashboard.php';
+
+        // LOG DE DEPURACIÓN
+        $logStr = "[DEBUG LOGGED] URI: " . $_SERVER['REQUEST_URI'] . " | Root: $root | LoggedID: " . ($_SESSION['usuario_id'] ?? 'NULL');
+        error_log($logStr);
+
         if (isset($_SESSION['usuario_id'])) {
-            header('Location: ' . self::rootPath() . 'presentacion/vistas/dashboard.php');
+            header('Location: ' . $target);
             exit();
         }
     }
