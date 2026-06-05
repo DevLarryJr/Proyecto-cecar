@@ -45,7 +45,7 @@ class SolicitudDAO
             FROM   solicitudes s
             JOIN   usuarios            u  ON u.id           = s.usuario_id
             JOIN   dependencias        d  ON d.id           = u.id_dependecia
-            JOIN   mydb.cargo          c  ON c.idcargo      = u.id_cargo
+            JOIN   cargo          c  ON c.idcargo      = u.id_cargo
             JOIN   estados_solicitud   e  ON e.id           = s.estado_id
             $where
             ORDER  BY s.created_at DESC
@@ -107,7 +107,7 @@ class SolicitudDAO
             FROM solicitudes s
             JOIN usuarios u ON u.id = s.usuario_id
             JOIN dependencias d ON d.id = u.id_dependecia
-            JOIN mydb.cargo c ON c.idcargo = u.id_cargo
+            JOIN cargo c ON c.idcargo = u.id_cargo
             LEFT JOIN estados_solicitud e ON s.estado_id = e.id
             WHERE s.id = ? AND s.activo = 1
         ");
@@ -332,7 +332,7 @@ class SolicitudDAO
     {
         $pdo = Database::getConnection();
         $sql = "SELECT idcargo AS id, nombre_cargo AS nombre, descripcion_cargo 
-                FROM mydb.cargo 
+                FROM cargo 
                 ORDER BY nombre_cargo ASC";
         $stmt = $pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
