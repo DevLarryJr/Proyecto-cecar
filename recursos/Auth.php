@@ -14,11 +14,16 @@ class Auth
     public static function init(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
-            // Asegurar que la cookie de sesión sea válida para todo el dominio
+            // Detectar HTTPS real: Railway usa proxy inverso con X-Forwarded-Proto
+            $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+                    || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+
+            // 'secure' => true es obligatorio en HTTPS para que la cookie se envíe correctamente
             session_set_cookie_params([
-                'path' => '/',
+                'path'     => '/',
                 'httponly' => true,
-                'samesite' => 'Lax'
+                'samesite' => 'Lax',
+                'secure'   => $isHttps,
             ]);
             session_start();
         }
