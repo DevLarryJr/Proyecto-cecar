@@ -5,9 +5,10 @@
  */
 
 require_once __DIR__ . '/../recursos/Database.php';
+require_once __DIR__ . '/../recursos/Auth.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../presentacion/vistas/registro.php');
+    header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/registro.php');
     exit();
 }
 
@@ -20,7 +21,7 @@ $telefono  = trim($_POST['telefono'] ?? '');
 $password  = $_POST['password'] ?? '';
 
 if (empty($nombre) || empty($email) || empty($password)) {
-    header('Location: ../presentacion/vistas/registro.php?error=empty_fields');
+    header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/registro.php?error=empty_fields');
     exit();
 }
 
@@ -31,7 +32,7 @@ try {
     $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE email = ? LIMIT 1");
     $stmt->execute([$email]);
     if ($stmt->fetch()) {
-        header('Location: ../presentacion/vistas/registro.php?error=email_exists');
+        header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/registro.php?error=email_exists');
         exit();
     }
 
@@ -53,13 +54,13 @@ try {
     $pdo->commit();
 
     // Redirigir al login con éxito
-    header('Location: ../index.php?registro=ok');
+    header('Location: ' . Auth::baseUrl() . 'index.php?registro=ok');
 
 } catch (Exception $e) {
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
     }
     error_log('[RegistroController] ' . $e->getMessage());
-    header('Location: ../presentacion/vistas/registro.php?error=db');
+    header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/registro.php?error=db');
 }
 exit();

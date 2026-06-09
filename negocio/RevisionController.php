@@ -47,7 +47,7 @@ if ($solicitudId <= 0 || !in_array($accion, ['aprobar', 'rechazar', 'avanzar'], 
         echo json_encode(['success' => false, 'errors' => [$msg]]);
         exit();
     }
-    header('Location: ../presentacion/vistas/revision.php?error=missing_data');
+    header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/revision.php?error=missing_data');
     exit();
 }
 
@@ -60,7 +60,7 @@ if (!$solicitudActual) {
         echo json_encode(['success' => false, 'errors' => ['Solicitud no encontrada']]);
         exit();
     }
-    header('Location: ../presentacion/vistas/revision.php?error=not_found');
+    header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/revision.php?error=not_found');
     exit();
 }
 
@@ -77,7 +77,7 @@ if ($accion === 'avanzar') {
     }
     
     $status = $res['success'] ? 'success' : 'error';
-    header("Location: ../presentacion/vistas/revision.php?status=$status");
+    header("Location: " . Auth::baseUrl() . "presentacion/vistas/revision.php?status=$status");
     exit();
 }
 
@@ -92,7 +92,7 @@ if (in_array($solicitudActual['estado'], $estadosNoPermitidos, true)) {
         echo json_encode(['success' => false, 'errors' => [$msg]]);
         exit();
     }
-    header('Location: ../presentacion/vistas/revision.php?error=already_finalized');
+    header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/revision.php?error=already_finalized');
     exit();
 }
 

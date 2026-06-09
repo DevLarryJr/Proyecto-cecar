@@ -16,25 +16,25 @@ if ($id > 0) {
     if ($solicitud) {
         // SEGURIDAD: Solo el dueño o el admin pueden eliminar
         if (!Auth::isAdmin() && $solicitud['usuario_id'] != Auth::userId()) {
-            header('Location: ../presentacion/vistas/solicitudes.php?error=unauthorized');
+            header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/solicitudes.php?error=unauthorized');
             exit();
         }
 
         // REGLA DE NEGOCIO: Solo se puede eliminar si ya está aprobada (verde)
         if ($solicitud['estado'] !== 'aprobado') {
-            header('Location: ../presentacion/vistas/solicitudes.php?error=not_approved');
+            header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/solicitudes.php?error=not_approved');
             exit();
         }
 
         if (SolicitudDAO::eliminar($id)) {
-            header('Location: ../presentacion/vistas/solicitudes.php?delete=ok');
+            header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/solicitudes.php?delete=ok');
         } else {
-            header('Location: ../presentacion/vistas/solicitudes.php?delete=error');
+            header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/solicitudes.php?delete=error');
         }
     } else {
-        header('Location: ../presentacion/vistas/solicitudes.php');
+        header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/solicitudes.php');
     }
 } else {
-    header('Location: ../presentacion/vistas/solicitudes.php');
+    header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/solicitudes.php');
 }
 exit();

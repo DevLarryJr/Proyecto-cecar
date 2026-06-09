@@ -279,7 +279,16 @@ if (!$fechaTramite && $estado === 'revision') {
                             <p class="text-xs text-gray-400 font-bold uppercase tracking-widest">Documento PDF Adjunto</p>
                         </div>
                     </div>
-                    <a href="../../uploads/<?php echo $solicitud['archivo']; ?>" target="_blank"
+                    <?php
+                        $scheme  = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                        $baseUrl = $scheme . '://' . $_SERVER['HTTP_HOST'];
+                        // Obtener la ruta base del proyecto (todo antes de /presentacion/...)
+                        $scriptPath = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+                        // Subir dos niveles desde /presentacion/vistas → raíz del proyecto
+                        $projectRoot = rtrim(dirname(dirname($scriptPath)), '/');
+                        $pdfUrl = $baseUrl . $projectRoot . '/uploads/' . $solicitud['archivo'];
+                    ?>
+                    <a href="<?php echo htmlspecialchars($pdfUrl); ?>" target="_blank"
                        class="px-8 py-3 bg-danger hover:bg-red-700 text-white text-xs font-black uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-danger/20">
                         Visualizar
                     </a>

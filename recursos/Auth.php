@@ -24,19 +24,36 @@ class Auth
         }
     }
 
+    /**
+     * Devuelve la URL base absoluta de la aplicación.
+     * Ejemplo: https://dominio.com/ o http://localhost/proyecto-cecar/
+     */
+    public static function baseUrl(): string
+    {
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' || 
+                     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')) 
+                     ? 'https://' : 'http://';
+        $host = $_SERVER['HTTP_HOST'];
+        
+        // Encontrar la ruta base usando el SCRIPT_NAME de index.php si estamos en él,
+        // o determinándola según document root.
+        $docRoot = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
+        $projectDir = str_replace('\\', '/', dirname(__DIR__));
+        
+        $baseFolder = '';
+        if (strpos($projectDir, $docRoot) === 0) {
+            $baseFolder = str_replace($docRoot, '', $projectDir);
+        }
+        
+        return rtrim($protocol . $host . $baseFolder, '/') . '/';
+    }
+
     /** Redirige al login si el usuario no ha iniciado sesión. */
     public static function requireLogin(): void
     {
         self::init();
-        $root = self::rootPath();
-        $target = $root . 'index.php';
-        
-        // LOG DE DEPURACIÓN (Temporal para arreglar producción)
-        $logStr = "[DEBUG AUTH] URI: " . $_SERVER['REQUEST_URI'] . " | Root: $root | LoggedID: " . ($_SESSION['usuario_id'] ?? 'NULL');
-        error_log($logStr);
-
         if (!isset($_SESSION['usuario_id'])) {
-            header('Location: ' . $target);
+            header('Location: ' . self::baseUrl() . 'index.php');
             exit();
         }
     }
@@ -45,15 +62,8 @@ class Auth
     public static function redirectIfLoggedIn(): void
     {
         self::init();
-        $root = self::rootPath();
-        $target = $root . 'presentacion/vistas/dashboard.php';
-
-        // LOG DE DEPURACIÓN
-        $logStr = "[DEBUG LOGGED] URI: " . $_SERVER['REQUEST_URI'] . " | Root: $root | LoggedID: " . ($_SESSION['usuario_id'] ?? 'NULL');
-        error_log($logStr);
-
         if (isset($_SESSION['usuario_id'])) {
-            header('Location: ' . $target);
+            header('Location: ' . self::baseUrl() . 'presentacion/vistas/dashboard.php');
             exit();
         }
     }

@@ -20,9 +20,8 @@ try {
     // ── 1. Verificar sesión ───────────────────────────────────────
     Auth::requireLogin();
 
-    // ── Solo aceptar POST ────────────────────────────────────────
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header('Location: ../presentacion/vistas/solicitud.php');
+        header('Location: ' . Auth::baseUrl() . 'presentacion/vistas/solicitud.php');
         exit();
     }
 
