@@ -167,7 +167,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                 <?php endif; ?>
 
                 <?php if ($estado !== 'revision'): ?>
-                <div class="bg-gray-100 rounded-3xl p-8 border border-gray-200">
+                <div class="bg-gray-100 rounded-3xl p-8 border border-gray-200 animate-card delay-500">
                     <h2 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Nota de Auditor&iacute;a Final</h2>
                     <p class="text-gray-600 italic leading-relaxed">"<?php echo htmlspecialchars($solicitud['comentario_revision'] ?? 'Sin observaciones adicionales.'); ?>"</p>
                 </div>
@@ -227,7 +227,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                 </div>
 
                 <?php if (!empty($solicitud['historial'])): ?>
-                <div class="bg-gray-50/50 rounded-3xl p-8 border border-gray-100 shadow-inner">
+                <div class="bg-gray-50/50 rounded-3xl p-8 border border-gray-100 shadow-inner animate-card delay-300">
                     <h2 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-6">Log de Actividad</h2>
                     <div class="space-y-6">
                         <?php foreach (array_reverse($solicitud['historial']) as $h): 
