@@ -48,7 +48,7 @@ $pendientes = $data['pendientes'];
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6 animate-card delay-100">
             <div>
                 <h1 class="text-3xl font-bold text-gray-800">Gesti&oacute;n de Solicitudes Pendientes</h1>
                 <p class="text-gray-500 mt-2">Revisa y procesa los requerimientos institucionales.</p>
@@ -60,7 +60,7 @@ $pendientes = $data['pendientes'];
         </div>
 
         <!-- BUSCADOR -->
-        <div class="bg-white rounded-2xl shadow-xl shadow-gray-300/60 border border-gray-200 p-6 mb-8">
+        <div class="bg-white rounded-2xl shadow-xl shadow-gray-300/60 border border-gray-200 p-6 mb-8 animate-card delay-200">
             <div class="relative max-w-xl">
                 <input type="text" id="revSearchInput" placeholder="Buscar por ID o solicitante..." class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl outline-none text-sm focus:ring-2 focus:ring-primary/20 transition-all">
                 <svg class="w-5 h-5 absolute left-4 top-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="2"/></svg>
@@ -100,12 +100,16 @@ $pendientes = $data['pendientes'];
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         <?php if (empty($pendientes)): ?>
-                            <tr class="empty-row"><td colspan="3" class="px-8 py-16 text-center text-gray-400 italic">No hay solicitudes pendientes.</td></tr>
+                            <tr class="empty-row animate-card delay-300"><td colspan="3" class="px-8 py-16 text-center text-gray-400 italic">No hay solicitudes pendientes.</td></tr>
                         <?php else: ?>
-                            <?php foreach ($pendientes as $s): 
+                            <?php 
+                            $delayCounter = 300;
+                            foreach ($pendientes as $s): 
                                 $badge = ViewHelper::getEstadoConfig($s['estado']);
+                                $delayClass = "delay-" . $delayCounter;
+                                if ($delayCounter < 500) $delayCounter += 100;
                             ?>
-                                <tr class="hover:bg-gray-50 transition-colors group">
+                                <tr class="hover:bg-gray-50 transition-colors group animate-card <?php echo $delayClass; ?>">
                                     <td class="px-8 py-10 font-black text-2xl text-primary align-top">#<?php echo $s['id']; ?></td>
                                     <td class="px-8 py-10 align-top">
                                         <div class="flex items-start">
