@@ -42,36 +42,40 @@ Auth::requireLogin();
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-<?php echo Auth::isAdmin() ? '4' : '2'; ?> gap-8 max-w-<?php echo Auth::isAdmin() ? '7xl' : '4xl'; ?> mx-auto">
             
-            <a href="solicitud.php" class="group bg-white p-8 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 hover:shadow-2xl hover:shadow-brand-main/20 transition-all duration-500 transform hover:-translate-y-3">
-                <div class="w-16 h-16 bg-brand-soft text-brand-main rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-main group-hover:text-white transition-all duration-500 shadow-lg shadow-brand-main/10 rotate-3 group-hover:rotate-0">
-                    <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2"/></svg>
+            <!-- Crear Solicitud: verde, ícono se mantiene en color de marca en hover -->
+            <a href="solicitud.php" class="group bg-white p-8 rounded-[2rem] shadow-lg shadow-gray-300/60 border border-gray-200 hover:shadow-2xl hover:shadow-brand-main/30 hover:border-brand-main/30 hover:-translate-y-3 transition-all duration-300">
+                <div class="w-16 h-16 bg-green-50 text-brand-main rounded-2xl flex items-center justify-center mb-6 group-hover:bg-green-100 transition-all duration-300 shadow-md shadow-green-200/50 rotate-3 group-hover:rotate-0">
+                    <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2.5" stroke-linecap="round"/></svg>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-3">Crear Solicitud</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-brand-main transition-colors duration-300">Crear Solicitud</h2>
                 <p class="text-gray-500 text-sm leading-relaxed">Inicia un nuevo requerimiento de servicios institucionales.</p>
             </a>
 
-            <a href="solicitudes.php" class="group bg-white p-8 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 hover:shadow-2xl hover:shadow-blue-600/20 transition-all duration-500 transform hover:-translate-y-3">
-                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500 shadow-lg shadow-blue-600/10 -rotate-3 group-hover:rotate-0">
+            <!-- Mis Solicitudes: azul -->
+            <a href="solicitudes.php" class="group bg-white p-8 rounded-[2rem] shadow-lg shadow-gray-300/60 border border-gray-200 hover:shadow-2xl hover:shadow-blue-500/30 hover:border-blue-200 hover:-translate-y-3 transition-all duration-300">
+                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-md shadow-blue-200/50 -rotate-3 group-hover:rotate-0">
                     <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-width="2"/></svg>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-3">Mis Solicitudes</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors duration-300">Mis Solicitudes</h2>
                 <p class="text-gray-500 text-sm leading-relaxed">Consulta el historial y estado de todos tus trámites.</p>
             </a>
 
             <?php if (Auth::isAdmin()): ?>
-                <a href="revision.php" class="group bg-white p-8 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 hover:shadow-2xl hover:shadow-amber-600/20 transition-all duration-500 transform hover:-translate-y-3">
-                    <div class="w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-600 group-hover:text-white transition-all duration-500 shadow-lg shadow-amber-600/10 rotate-3 group-hover:rotate-0">
+                <!-- Panel Revisor: ámbar -->
+                <a href="revision.php" class="group bg-white p-8 rounded-[2rem] shadow-lg shadow-gray-300/60 border border-gray-200 hover:shadow-2xl hover:shadow-amber-500/30 hover:border-amber-200 hover:-translate-y-3 transition-all duration-300">
+                    <div class="w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300 shadow-md shadow-amber-200/50 rotate-3 group-hover:rotate-0">
                         <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2"/></svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-3">Panel Revisor</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-amber-600 transition-colors duration-300">Panel Revisor</h2>
                     <p class="text-gray-500 text-sm leading-relaxed">Gestiona, audita y aprueba solicitudes registradas.</p>
                 </a>
 
-                <a href="dashboard_admin.php" class="group bg-white p-8 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 hover:shadow-2xl hover:shadow-indigo-600/20 transition-all duration-500 transform hover:-translate-y-3">
-                    <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 shadow-lg shadow-indigo-600/10 -rotate-3 group-hover:rotate-0">
+                <!-- Estadísticas: índigo -->
+                <a href="dashboard_admin.php" class="group bg-white p-8 rounded-[2rem] shadow-lg shadow-gray-300/60 border border-gray-200 hover:shadow-2xl hover:shadow-indigo-500/30 hover:border-indigo-200 hover:-translate-y-3 transition-all duration-300">
+                    <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shadow-md shadow-indigo-200/50 -rotate-3 group-hover:rotate-0">
                         <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" stroke-width="2"/></svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-3">Estadísticas</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-indigo-600 transition-colors duration-300">Estadísticas</h2>
                     <p class="text-gray-500 text-sm leading-relaxed">Analiza métricas globales y genera reportes detallados.</p>
                 </a>
             <?php endif; ?>
