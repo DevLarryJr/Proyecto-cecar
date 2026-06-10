@@ -52,6 +52,11 @@ $isEdit = $data['isEdit'];
             <input type="hidden" name="ajax" value="1">
             <input type="hidden" name="id_solicitud" value="<?php echo $id; ?>">
             
+            <!-- Contenedor de Estados AJAX -->
+            <div id="status-container" class="hidden mx-8 mt-8">
+                <div id="status-message" class="text-sm font-medium"></div>
+            </div>
+            
             <div class="p-8 space-y-10">
                 <section class="animate-card delay-200">
                     <div class="flex items-center mb-6">
