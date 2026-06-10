@@ -1,14 +1,20 @@
 <?php
 /**
- * ViewHelper.php
- * Utilidades para la capa de presentación: centraliza lógica de UI, 
- * colores de estados y generación de URLs dinámicas.
+ * ViewHelper.php — Capa de Recursos (Presentación)
+ * 
+ * Centraliza toda la lógica de diseño e inyección de estilos. Garantiza que toda
+ * la aplicación tenga la misma configuración de colores, animaciones y comportamiento
+ * visual, eliminando la duplicidad de CSS en cada archivo PHP.
  */
 
 class ViewHelper {
     
     /**
-     * Retorna la configuración de colores y texto para los estados de solicitud.
+     * Retorna la configuración de diseño para los estados de una solicitud.
+     * Facilita el mantenimiento de colores y etiquetas de estados en un solo lugar.
+     * 
+     * @param string|null $estado Slug del estado (ej. 'revision', 'aprobado').
+     * @return array [Clases de Tailwind, Nombre legible].
      */
     public static function getEstadoConfig($estado) {
         $estado = strtolower($estado ?? 'revision');
@@ -25,17 +31,21 @@ class ViewHelper {
     }
 
     /**
-     * Genera la URL absoluta para visualizar un archivo PDF adjunto.
+     * Genera la URL absoluta para visualizar un archivo PDF en la carpeta /uploads/.
+     * Resuelve dinámicamente la ruta del proyecto sin importar en qué subcarpeta estemos.
+     * 
+     * @param string $archivo Nombre del archivo en la base de datos.
+     * @return string URL completa para href.
      */
     public static function getPdfUrl($archivo) {
         if (empty($archivo)) return '#';
         
+        // Detectar protocolo para prevenir advertencias de contenido mixto
         $scheme  = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $baseUrl = $scheme . '://' . $_SERVER['HTTP_HOST'];
         
-        // Obtenemos la ruta base del proyecto de forma dinámica
+        // Determinar la raíz del proyecto para localizar la carpeta /uploads/
         $scriptPath = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
-        // Si estamos en /presentacion/vistas/, subimos dos niveles
         $projectRoot = $scriptPath;
         if (strpos($scriptPath, '/presentacion/vistas') !== false) {
             $projectRoot = dirname(dirname($scriptPath));
@@ -45,7 +55,11 @@ class ViewHelper {
     }
 
     /**
-     * Prepara los datos del tracker visual (timeline) para detalle.php
+     * Prepara el estado visual del Timeline (pasos de progreso).
+     * Determina qué círculos están rellenos, cuáles brillan y qué etiquetas mostrar.
+     * 
+     * @param string $estado Estado actual de la solicitud.
+     * @return array Datos de configuración para el dibujo de la línea de tiempo.
      */
     public static function prepareTimeline($estado) {
         $data = [
@@ -57,6 +71,7 @@ class ViewHelper {
             'finalLabel' => ($estado === 'rechazado') ? 'Rechazada' : 'Aceptada'
         ];
 
+        // Lógica de "Brillo" para el paso actual
         if ($estado === 'revision' || $estado === 'en_transito') {
             $data['step2Label'] = ($estado === 'revision') ? 'En revisión' : 'En tránsito';
             $data['step2Color'] = 'bg-amber-100 border-2 border-amber-400 animate-glow-amber';
@@ -74,16 +89,19 @@ class ViewHelper {
     }
 
     /**
-     * Imprime el bloque de configuración estándar de Tailwind para el proyecto.
+     * Inyecta la configuración global de Tailwind y los estilos CSS propios.
+     * Esto incluye: Colores de marca CECAR y el Sistema de Animaciones (Fade & Slide).
      */
     public static function renderTailwindConfig() {
         ?>
+        <!-- Inclusión de CDN de Tailwind (Optimizado para desarrollo rápido) -->
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
             tailwind.config = {
                 theme: {
                     extend: {
                         colors: {
+                            // Definición de la paleta oficial CECAR (Verdes, Amarillos, Naranjas)
                             primary: '#064c2b',
                             secondary: '#61a60e',
                             tertiary: '#c2d500',
@@ -97,16 +115,18 @@ class ViewHelper {
             }
         </script>
         <style>
+            /* Keyframes para la animación de entrada suave (Premiumfeel) */
             @keyframes fadeSlideUp {
                 0% { opacity: 0; transform: translateY(30px); }
                 100% { opacity: 1; transform: translateY(0); }
             }
+            /* Clase global para animar tarjetas y secciones */
             .animate-card {
-                opacity: 0;
+                opacity: 0; /* Inicia invisible hasta que comienza la animación */
                 animation: fadeSlideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
                 will-change: opacity, transform;
             }
-            /* Utilidades para delays escalonados */
+            /* Utilidad para lograr el efecto escalonado (cascada) en listas */
             .delay-100 { animation-delay: 0.1s !important; }
             .delay-200 { animation-delay: 0.2s !important; }
             .delay-300 { animation-delay: 0.3s !important; }
