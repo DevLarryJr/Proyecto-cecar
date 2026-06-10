@@ -113,6 +113,7 @@ $isEdit = $data['isEdit'];
                             <label class="mb-2 block text-sm font-medium text-gray-700">Documentaci&oacute;n (PDF)</label>
                             <div onclick="document.getElementById('adjunto').click()" class="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center cursor-pointer hover:border-primary transition-colors">
                                 <p class="text-sm font-medium text-gray-600">Haz clic para subir soporte</p>
+                                <p class="text-[10px] font-bold text-green-600 mt-1 uppercase tracking-widest">Máximo 10MB</p>
                                 <input type="file" name="adjunto" id="adjunto" class="sr-only" accept=".pdf" onchange="mostrarNombre()">
                                 <p id="nombre-elegido" class="mt-4 text-xs font-bold text-secondary"></p>
                             </div>
