@@ -14,24 +14,10 @@ $cargos = SolicitudDAO::obtenerCargos();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - Proyecto CECAR</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#064c2b',
-                        secondary: '#61a60e',
-                        tertiary: '#c2d500',
-                        quaternary: '#ffa400',
-                        danger: '#e12d2e',
-                        primaryDark: '#043c22',
-                        secondaryDark: '#4f890b'
-                    }
-                }
-            }
-        }
-    </script>
+    <?php 
+    require_once __DIR__ . '/../../recursos/ViewHelper.php';
+    ViewHelper::renderTailwindConfig(); 
+    ?>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="../img/logoIco.ico" type="image/x-icon">
     <style>

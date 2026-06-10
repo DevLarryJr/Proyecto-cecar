@@ -10,7 +10,20 @@ require_once __DIR__ . '/../recursos/Auth.php';
 class DashboardController
 {
     /**
-     * Obtiene todos los datos requeridos para renderizar el dashboard.
+     * Prepara los datos agregados para el dashboard administrativo.
+     */
+    public static function prepararVistaAdmin() {
+        Auth::requireLogin();
+        if (!Auth::isAdmin()) {
+            header('Location: dashboard.php');
+            exit();
+        }
+
+        return self::obtenerDatos();
+    }
+
+    /**
+     * Obtiene el set completo de estadísticas (KPIs, Charts, Recientes).
      * @return array
      */
     public static function obtenerDatos(): array
@@ -26,7 +39,7 @@ class DashboardController
             'porMes'            => SolicitudDAO::contarSolicitudesPorMes(),
             'porDependencia'    => SolicitudDAO::contarSolicitudesPorDependencia(10),
             'recientes'         => SolicitudDAO::obtenerSolicitudesRecientes(10),
-            'dependencias'      => SolicitudDAO::obtenerDependencias() // Para los filtros del reporte
+            'dependencias'      => SolicitudDAO::obtenerDependencias() 
         ];
     }
 }

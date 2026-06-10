@@ -1,17 +1,28 @@
-<?php
-/**
- * RevisionController.php — Capa de Negocio
- * Procesa la decisión (aprobar/rechazar) del Administrador.
- * Reemplaza php/procesar_revision.php.
- */
+class RevisionController {
 
-require_once __DIR__ . '/../recursos/Auth.php';
-require_once __DIR__ . '/../capa_de_acceso/dao/SolicitudDAO.php';
+    /**
+     * Prepara los datos para la vista revision.php
+     */
+    public static function prepararRevision() {
+        Auth::requireLogin();
 
-// Asegurar limpieza de buffer para respuestas JSON
-if (isset($_POST['ajax']) || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest')) {
-    ob_start();
+        if (!Auth::isAdmin()) {
+            header('Location: dashboard.php');
+            exit();
+        }
+
+        return [
+            'pendientes' => SolicitudDAO::obtenerPendientes()
+        ];
+    }
 }
+
+// Lógica de procesamiento de POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Asegurar limpieza de buffer para respuestas JSON
+    if (isset($_POST['ajax']) || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest')) {
+        ob_start();
+    }
 
 // ── 1. Verificar sesión y rol Admin ──────────────────────────
 Auth::requireLogin();
