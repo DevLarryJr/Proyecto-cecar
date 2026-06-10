@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../recursos/Auth.php';
+require_once __DIR__ . '/../../recursos/ViewHelper.php';
 Auth::requireLogin();
 ?>
 <!DOCTYPE html>

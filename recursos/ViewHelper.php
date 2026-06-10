@@ -104,6 +104,7 @@ class ViewHelper {
             .animate-card {
                 opacity: 0;
                 animation: fadeSlideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                will-change: opacity, transform;
             }
             /* Utilidades para delays escalonados */
             .delay-100 { animation-delay: 0.1s !important; }
