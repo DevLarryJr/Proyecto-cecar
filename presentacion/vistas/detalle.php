@@ -1,18 +1,22 @@
 <?php
 /**
- * detalle.php — Capa de Presentación
+ * detalle.php — Capa de Presentación (Expediente Digital)
+ * 
+ * Esta vista muestra toda la información detallada de una solicitud específica.
+ * Incluye el estado actual, el desglose de servicios, la justificación, 
+ * los archivos adjuntos y un timeline interactivo del proceso.
  */
 require_once __DIR__ . '/../../negocio/SolicitudController.php';
 require_once __DIR__ . '/../../recursos/ViewHelper.php';
 
-// Los datos vienen preparados desde el controlador
+// Obtención de datos orquestada desde el controlador de negocio
 $data = SolicitudController::prepararDetalle($_GET['id'] ?? 0);
 $solicitud = $data['solicitud'];
 $timeline = $data['timeline'];
 $fechaTramite = $data['fechaTramite'];
 $fechaFinal = $data['fechaFinal'];
 
-// Variables de estado mapeadas
+// Mapeo dinámico de estilos según el estado (Aprobado, Rechazado, Revisión)
 $estado = $solicitud['estado'] ?? 'revision';
 $currentStatus = ViewHelper::getEstadoConfig($estado);
 ?>
@@ -22,12 +26,16 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle Solicitud #<?php echo $solicitud['id']; ?> - CECAR</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <?php ViewHelper::renderTailwindConfig(); ?>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="../img/logoIco.ico" type="image/x-icon">
+    
     <style>
         body { font-family: 'Inter', sans-serif; }
+        /* Efectos de "Glow" (Resplandor) para indicar el estado activo en el timeline */
         @keyframes glow-primary { 0% { box-shadow: 0 0 0 0 rgba(6, 76, 43, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(6, 76, 43, 0); } 100% { box-shadow: 0 0 0 0 rgba(6, 76, 43, 0); } }
         @keyframes glow-secondary { 0% { box-shadow: 0 0 0 0 rgba(97, 166, 14, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(97, 166, 14, 0); } 100% { box-shadow: 0 0 0 0 rgba(97, 166, 14, 0); } }
         @keyframes glow-amber { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
@@ -39,6 +47,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
 
 <body class="bg-gray-50 min-h-screen text-gray-800">
 
+    <!-- Navegación con Breadcrumbs dinámicos -->
     <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3 text-sm font-medium text-primary">
@@ -54,6 +63,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
 
     <main class="max-w-6xl mx-auto px-6 py-12">
 
+        <!-- ENCABEZADO: Título y Badge de Estado -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 animate-card delay-100">
             <div>
                 <div class="flex items-center space-x-3 mb-2">
@@ -63,6 +73,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                 </div>
                 <h1 class="text-4xl font-black text-gray-900 tracking-tight">Detalle de Solicitud</h1>
             </div>
+            <!-- Badge dinámico inyectado desde ViewHelper -->
             <div class="flex items-center px-6 py-3 <?php echo $currentStatus[0]; ?> rounded-2xl border border-current/10 shadow-sm">
                 <div class="w-2 h-2 rounded-full bg-current mr-3 animate-pulse"></div>
                 <span class="text-sm font-black uppercase tracking-widest"><?php echo $currentStatus[1]; ?></span>
@@ -70,7 +81,11 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            
+            <!-- COLUMNA IZQUIERDA: Información Principal -->
             <div class="lg:col-span-8 space-y-10">
+                
+                <!-- BLOQUE 1: Datos del Solicitante -->
                 <div class="bg-white rounded-3xl shadow-xl shadow-gray-300/60 border border-gray-200 overflow-hidden animate-card delay-200">
                     <div class="p-8 border-b border-gray-100 flex items-center justify-between">
                         <h2 class="text-xl font-bold text-gray-800">Informaci&oacute;n del Registro</h2>
@@ -105,6 +120,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                     </div>
                 </div>
 
+                <!-- BLOQUE 2: Tabla de Servicios Desglosada -->
                 <?php if (!empty($solicitud['servicios_list'])): ?>
                 <div class="bg-white rounded-3xl shadow-xl shadow-gray-300/60 border border-gray-200 overflow-hidden animate-card delay-300">
                     <div class="p-8 border-b border-gray-100 flex items-center space-x-3">
@@ -146,11 +162,13 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                 </div>
                 <?php endif; ?>
 
+                <!-- BLOQUE 3: Justificación del Requerimiento -->
                 <div class="bg-primary/5 rounded-3xl p-10 border border-primary/10 relative overflow-hidden animate-card delay-400">
                     <h2 class="text-xs font-black text-primary uppercase tracking-[0.3em] mb-6">Justificaci&oacute;n Institucional</h2>
                     <p class="text-xl font-medium text-primaryDark leading-relaxed italic relative z-10 break-words">"<?php echo htmlspecialchars($solicitud['justificacion']); ?>"</p>
                 </div>
 
+                <!-- BLOQUE 4: Soporte PDF (Si lo hay) -->
                 <?php if (!empty($solicitud['archivo'])): ?>
                 <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex items-center justify-between animate-card delay-500">
                     <div class="flex items-center space-x-5">
@@ -162,10 +180,12 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                             <p class="text-xs text-gray-400 font-bold uppercase tracking-widest">Documento PDF Adjunto</p>
                         </div>
                     </div>
+                    <!-- Link al PDF usando ViewHelper para resolver la URL relativa correcta -->
                     <a href="<?php echo ViewHelper::getPdfUrl($solicitud['archivo']); ?>" target="_blank" class="px-8 py-3 bg-danger hover:bg-red-700 text-white text-xs font-black uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-danger/20">Visualizar</a>
                 </div>
                 <?php endif; ?>
 
+                <!-- BLOQUE 5: Comentario Final (Visible solo si ya fue auditada) -->
                 <?php if ($estado !== 'revision'): ?>
                 <div class="bg-gray-100 rounded-3xl p-8 border border-gray-200 animate-card delay-500">
                     <h2 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Nota de Auditor&iacute;a Final</h2>
@@ -174,11 +194,15 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                 <?php endif; ?>
             </div>
 
+            <!-- COLUMNA DERECHA: Seguimiento y Logs -->
             <div class="lg:col-span-4 space-y-10">
+                
+                <!-- TIMELINE DINÁMICO: Explica visualmente el flujo de estados -->
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 animate-card delay-200">
                     <h2 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-10">Progreso del Tr&aacute;mite</h2>
                     <div class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:h-full before:w-[3px] before:bg-gray-200">
                         
+                        <!-- Punto 1: Radicación (Siempre completada al entrar aquí) -->
                         <div class="relative flex items-start">
                             <div class="flex items-center justify-center flex-none rounded-2xl z-10 bg-secondary text-white shadow-xl animate-glow-secondary" style="width: 44px; height: 44px;">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -189,6 +213,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                             </div>
                         </div>
 
+                        <!-- Punto 2: Trámite Intermedio (Calculado dinámicamente) -->
                         <div class="relative flex items-start">
                             <div class="flex items-center justify-center flex-none rounded-2xl z-10 <?php echo $timeline['step2Color']; ?> transition-all" style="width: 44px; height: 44px;">
                                 <?php if ($timeline['step2Done']): ?><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -201,6 +226,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                             </div>
                         </div>
 
+                        <!-- Punto 3: Veredicto Final -->
                         <div class="relative flex items-start">
                             <?php
                             $finalizado = $timeline['finalizado'];
@@ -222,10 +248,12 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                     </div>
                 </div>
 
+                <!-- Botón de Retorno -->
                 <div class="space-y-4">
                     <a href="solicitudes.php" class="flex items-center justify-center w-full px-8 py-5 bg-white border border-gray-100 text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl hover:bg-gray-50 transition-all">Regresar al Listado</a>
                 </div>
 
+                <!-- HISTORIAL COMPLETO: Bitácora detallada de transiciones -->
                 <?php if (!empty($solicitud['historial'])): ?>
                 <div class="bg-gray-50/50 rounded-3xl p-8 border border-gray-100 shadow-inner animate-card delay-300">
                     <h2 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-6">Log de Actividad</h2>
