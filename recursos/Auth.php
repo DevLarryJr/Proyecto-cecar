@@ -164,6 +164,17 @@ class Auth
         return $_SESSION['cargo'] ?? '';
     }
 
+    /**
+     * Verifica si el usuario actual tiene rol de Administrador.
+     * @return bool True si es administrador.
+     */
+    public static function isAdmin(): bool
+    {
+        self::init();
+        $rol = strtolower(self::userRol());
+        return ($rol === 'administrador' || $rol === 'admin');
+    }
+
     /** Calcula la ruta de retroceso (../../) dinámicamente según la profundidad de la carpeta. */
     private static function rootPath(): string
     {
