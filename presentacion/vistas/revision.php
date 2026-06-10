@@ -60,9 +60,9 @@ $pendientes = $data['pendientes'];
         </div>
 
         <!-- BUSCADOR -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+        <div class="bg-white rounded-2xl shadow-xl shadow-gray-300/60 border border-gray-200 p-6 mb-8">
             <div class="relative max-w-xl">
-                <input type="text" id="revSearchInput" placeholder="Buscar por ID o solicitante..." class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl outline-none text-sm">
+                <input type="text" id="revSearchInput" placeholder="Buscar por ID o solicitante..." class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl outline-none text-sm focus:ring-2 focus:ring-primary/20 transition-all">
                 <svg class="w-5 h-5 absolute left-4 top-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="2"/></svg>
             </div>
         </div>
@@ -88,7 +88,7 @@ $pendientes = $data['pendientes'];
             });
         </script>
 
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-xl shadow-gray-300/60 border border-gray-200 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead>
@@ -109,7 +109,7 @@ $pendientes = $data['pendientes'];
                                     <td class="px-8 py-10 font-black text-2xl text-primary align-top">#<?php echo $s['id']; ?></td>
                                     <td class="px-8 py-10 align-top">
                                         <div class="flex items-start">
-                                            <div class="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary font-black text-xl mr-5 shadow-inner">
+                                            <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center text-primary font-black text-xl mr-5 shadow-inner border border-gray-100">
                                                 <?php echo strtoupper(substr($s['nombre'], 0, 1)); ?>
                                             </div>
                                             <div>
@@ -134,9 +134,9 @@ $pendientes = $data['pendientes'];
                                             <?php
                                             $est = $s['estado'];
                                             $flujo = [
-                                                'revision'    => ['label' => 'Mover a En Tránsito', 'class' => 'bg-amber-500'],
-                                                'en_transito' => ['label' => 'Mover a Pendiente', 'class' => 'bg-orange-500'],
-                                                'pendiente'   => ['label' => 'Confirmar Entrega', 'class' => 'bg-secondary'],
+                                                'revision'    => ['label' => 'Mover a En Tránsito', 'class' => 'bg-amber-500 shadow-amber-200/50'],
+                                                'en_transito' => ['label' => 'Mover a Pendiente', 'class' => 'bg-orange-500 shadow-orange-200/50'],
+                                                'pendiente'   => ['label' => 'Confirmar Entrega', 'class' => 'bg-secondary shadow-secondary/20'],
                                             ];
                                             ?>
 
@@ -144,8 +144,8 @@ $pendientes = $data['pendientes'];
                                                 <form id="form-avanzar-<?php echo $s['id']; ?>" action="../../negocio/RevisionController.php" method="POST" class="space-y-2">
                                                     <input type="hidden" name="id_solicitud" value="<?php echo $s['id']; ?>">
                                                     <input type="hidden" name="accion" value="avanzar">
-                                                    <textarea name="comentario_revision" class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none text-[10px] bg-gray-50/30 font-medium" rows="2" placeholder="Nota opcional..."></textarea>
-                                                    <button type="button" class="hold-trigger w-full px-6 py-4 <?php echo $flujo[$est]['class']; ?> text-white text-[10px] font-black uppercase tracking-widest relative overflow-hidden rounded-xl shadow-sm transition-transform active:scale-[0.98]" data-form="form-avanzar-<?php echo $s['id']; ?>">
+                                                    <textarea name="comentario_revision" class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none text-[10px] bg-white font-medium focus:border-primary/30 transition-all" rows="2" placeholder="Nota opcional..."></textarea>
+                                                    <button type="button" class="hold-trigger w-full px-6 py-4 <?php echo $flujo[$est]['class']; ?> text-white text-[10px] font-black uppercase tracking-widest relative overflow-hidden rounded-xl shadow-lg transition-all active:scale-[0.98] hover:-translate-y-1 block" data-form="form-avanzar-<?php echo $s['id']; ?>">
                                                         <span class="relative z-10"><?php echo $flujo[$est]['label']; ?> (Mantener)</span>
                                                         <div class="progress-fill"></div>
                                                     </button>
@@ -153,14 +153,14 @@ $pendientes = $data['pendientes'];
                                             <?php endif; ?>
 
                                             <?php if ($est === 'entregado'): ?>
-                                                <div class="p-5 bg-gray-50 rounded-xl border border-gray-200">
+                                                <div class="p-5 bg-gray-50 rounded-xl border border-gray-200 shadow-inner">
                                                     <p class="text-[10px] font-bold text-gray-400 uppercase mb-4 tracking-widest text-center">Decisi&oacute;n Final</p>
                                                     <form action="../../negocio/RevisionController.php" method="POST" class="space-y-4">
                                                         <input type="hidden" name="id_solicitud" value="<?php echo $s['id']; ?>">
-                                                        <textarea name="comentario_revision" rows="2" class="w-full px-4 py-3 rounded-xl border border-gray-300 outline-none text-sm bg-white" placeholder="Nota de auditor&iacute;a..."></textarea>
+                                                        <textarea name="comentario_revision" rows="2" class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none text-sm bg-white focus:border-primary/30 transition-all" placeholder="Nota de auditor&iacute;a..."></textarea>
                                                         <div class="flex space-x-3">
-                                                            <button type="submit" name="accion" value="aprobar" class="flex-1 bg-secondary hover:bg-secondaryDark text-white text-[10px] font-black py-4 rounded-xl shadow-lg shadow-secondary/20 transition-all uppercase tracking-widest">Aprobar</button>
-                                                            <button type="submit" name="accion" value="rechazar" class="flex-1 bg-white border-2 border-danger/20 text-danger hover:bg-danger/5 text-[10px] font-black py-4 rounded-xl transition-all uppercase tracking-widest">Rechazar</button>
+                                                            <button type="submit" name="accion" value="aprobar" class="flex-1 bg-secondary hover:bg-secondaryDark text-white text-[10px] font-black py-4 rounded-xl shadow-lg shadow-secondary/30 transition-all uppercase tracking-widest hover:-translate-y-1">Aprobar</button>
+                                                            <button type="submit" name="accion" value="rechazar" class="flex-1 bg-white border-2 border-danger/20 text-danger hover:bg-danger/5 text-[10px] font-black py-4 rounded-xl transition-all uppercase tracking-widest hover:-translate-y-1">Rechazar</button>
                                                         </div>
                                                     </form>
                                                 </div>
