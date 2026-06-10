@@ -43,7 +43,7 @@ $isEdit = $data['isEdit'];
     </nav>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="mb-8">
+        <div class="mb-8 animate-card delay-100">
             <h1 class="text-3xl font-bold text-gray-800"><?php echo $isEdit ? 'Editar Solicitud #' . $id : 'Nueva Solicitud'; ?></h1>
             <p class="text-gray-500 mt-1"><?php echo $isEdit ? 'Actualiza los campos de tu requerimiento.' : 'Completa los campos para procesar tu requerimiento.'; ?></p>
         </div>
@@ -53,7 +53,7 @@ $isEdit = $data['isEdit'];
             <input type="hidden" name="id_solicitud" value="<?php echo $id; ?>">
             
             <div class="p-8 space-y-10">
-                <section>
+                <section class="animate-card delay-200">
                     <div class="flex items-center mb-6">
                         <div class="w-10 h-10 bg-primary/10 text-primary rounded-full flex items-center justify-center mr-4 font-bold">1</div>
                         <h2 class="text-xl font-bold text-gray-800">Información General</h2>
@@ -69,7 +69,7 @@ $isEdit = $data['isEdit'];
                     </div>
                 </section>
 
-                <section>
+                <section class="animate-card delay-300">
                     <div class="flex items-center mb-6">
                         <div class="w-10 h-10 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mr-4 font-bold">2</div>
                         <h2 class="text-xl font-bold text-gray-800">Detalle de Servicios</h2>
@@ -99,7 +99,7 @@ $isEdit = $data['isEdit'];
                     </button>
                 </section>
 
-                <section>
+                <section class="animate-card delay-400">
                     <div class="flex items-center mb-6">
                         <div class="w-10 h-10 bg-tertiary/10 text-primary rounded-full flex items-center justify-center mr-4 font-bold">3</div>
                         <h2 class="text-xl font-bold text-gray-800">Justificaci&oacute;n y Soportes</h2>
