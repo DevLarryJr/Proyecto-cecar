@@ -91,7 +91,7 @@ function jsonData($data) {
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-            <div class="bg-white p-8 rounded-[1.5rem] shadow-xl shadow-gray-200/60 border border-gray-200 transition hover:shadow-2xl duration-300">
+            <div class="bg-white p-8 rounded-[1.5rem] shadow-xl shadow-gray-200/60 border border-gray-200 transition hover:shadow-2xl duration-300 animate-card delay-500">
                 <div class="flex items-center justify-between mb-6">
                     <h4 class="text-sm font-bold text-gray-700 flex items-center">
                         <span class="w-3 h-3 bg-primary rounded-full mr-2"></span> Distribución por Estado
@@ -103,7 +103,7 @@ function jsonData($data) {
                 <div class="chart-container"><canvas id="chartEstado"></canvas></div>
                 <p id="chartNoData" class="hidden text-center text-gray-400 text-xs mt-4 italic">Sin datos para los filtros seleccionados.</p>
             </div>
-            <div class="bg-white p-8 rounded-[1.5rem] shadow-xl shadow-gray-200/60 border border-gray-200 transition hover:shadow-2xl duration-300 lg:col-span-2">
+            <div class="bg-white p-8 rounded-[1.5rem] shadow-xl shadow-gray-200/60 border border-gray-200 transition hover:shadow-2xl duration-300 lg:col-span-2 animate-card delay-500">
                 <h4 class="text-sm font-bold text-gray-700 mb-6 flex items-center">
                     <span class="w-3 h-3 bg-secondary rounded-full mr-2"></span> Tendencia Mensual <?php echo date('Y'); ?>
                 </h4>

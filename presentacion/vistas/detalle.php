@@ -54,7 +54,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
 
     <main class="max-w-6xl mx-auto px-6 py-12">
 
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 animate-card delay-100">
             <div>
                 <div class="flex items-center space-x-3 mb-2">
                     <span class="px-3 py-1 bg-primary/5 text-primary text-[10px] font-black uppercase tracking-widest rounded-lg border border-primary/10">Expediente Digital</span>
@@ -71,7 +71,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div class="lg:col-span-8 space-y-10">
-                <div class="bg-white rounded-3xl shadow-xl shadow-gray-300/60 border border-gray-200 overflow-hidden">
+                <div class="bg-white rounded-3xl shadow-xl shadow-gray-300/60 border border-gray-200 overflow-hidden animate-card delay-200">
                     <div class="p-8 border-b border-gray-100 flex items-center justify-between">
                         <h2 class="text-xl font-bold text-gray-800">Informaci&oacute;n del Registro</h2>
                     </div>
@@ -106,7 +106,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                 </div>
 
                 <?php if (!empty($solicitud['servicios_list'])): ?>
-                <div class="bg-white rounded-3xl shadow-xl shadow-gray-300/60 border border-gray-200 overflow-hidden">
+                <div class="bg-white rounded-3xl shadow-xl shadow-gray-300/60 border border-gray-200 overflow-hidden animate-card delay-300">
                     <div class="p-8 border-b border-gray-100 flex items-center space-x-3">
                         <h2 class="text-xl font-bold text-gray-800">Servicios Requeridos</h2>
                     </div>
@@ -146,13 +146,13 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                 </div>
                 <?php endif; ?>
 
-                <div class="bg-primary/5 rounded-3xl p-10 border border-primary/10 relative overflow-hidden">
+                <div class="bg-primary/5 rounded-3xl p-10 border border-primary/10 relative overflow-hidden animate-card delay-400">
                     <h2 class="text-xs font-black text-primary uppercase tracking-[0.3em] mb-6">Justificaci&oacute;n Institucional</h2>
                     <p class="text-xl font-medium text-primaryDark leading-relaxed italic relative z-10 break-words">"<?php echo htmlspecialchars($solicitud['justificacion']); ?>"</p>
                 </div>
 
                 <?php if (!empty($solicitud['archivo'])): ?>
-                <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex items-center justify-between">
+                <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex items-center justify-between animate-card delay-500">
                     <div class="flex items-center space-x-5">
                         <div class="w-14 h-14 bg-danger/10 rounded-2xl flex items-center justify-center text-danger">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -175,7 +175,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
             </div>
 
             <div class="lg:col-span-4 space-y-10">
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 animate-card delay-200">
                     <h2 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-10">Progreso del Tr&aacute;mite</h2>
                     <div class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:h-full before:w-[3px] before:bg-gray-200">
                         
