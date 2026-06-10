@@ -72,26 +72,26 @@ function jsonData($data) {
         </div>
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 border-t-4 border-t-primary transition hover:shadow-md">
+            <div class="bg-white rounded-[1.5rem] p-6 shadow-xl shadow-gray-200/60 border border-gray-200 border-t-4 border-t-primary transition hover:shadow-2xl hover:-translate-y-1 duration-300">
                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Solicitudes</p>
                 <h3 class="text-3xl font-bold text-gray-800"><?php echo $resumen['total']; ?></h3>
             </div>
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 border-t-4 border-t-quaternary transition hover:shadow-md">
+            <div class="bg-white rounded-[1.5rem] p-6 shadow-xl shadow-gray-200/60 border border-gray-200 border-t-4 border-t-quaternary transition hover:shadow-2xl hover:-translate-y-1 duration-300">
                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">En Revisi&oacute;n</p>
                 <h3 class="text-3xl font-bold text-gray-800"><?php echo $resumen['revision']; ?></h3>
             </div>
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 border-t-4 border-t-secondary transition hover:shadow-md">
+            <div class="bg-white rounded-[1.5rem] p-6 shadow-xl shadow-gray-200/60 border border-gray-200 border-t-4 border-t-secondary transition hover:shadow-2xl hover:-translate-y-1 duration-300">
                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Aceptadas</p>
                 <h3 class="text-3xl font-bold text-gray-800"><?php echo $resumen['aprobado']; ?></h3>
             </div>
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 border-t-4 border-t-danger transition hover:shadow-md">
+            <div class="bg-white rounded-[1.5rem] p-6 shadow-xl shadow-gray-200/60 border border-gray-200 border-t-4 border-t-danger transition hover:shadow-2xl hover:-translate-y-1 duration-300">
                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Rechazadas</p>
                 <h3 class="text-3xl font-bold text-gray-800"><?php echo $resumen['rechazado']; ?></h3>
             </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-            <div class="bg-white p-8 rounded-xl border border-gray-100 shadow-sm transition hover:shadow-md">
+            <div class="bg-white p-8 rounded-[1.5rem] shadow-xl shadow-gray-200/60 border border-gray-200 transition hover:shadow-2xl duration-300">
                 <div class="flex items-center justify-between mb-6">
                     <h4 class="text-sm font-bold text-gray-700 flex items-center">
                         <span class="w-3 h-3 bg-primary rounded-full mr-2"></span> Distribución por Estado
@@ -103,7 +103,7 @@ function jsonData($data) {
                 <div class="chart-container"><canvas id="chartEstado"></canvas></div>
                 <p id="chartNoData" class="hidden text-center text-gray-400 text-xs mt-4 italic">Sin datos para los filtros seleccionados.</p>
             </div>
-            <div class="bg-white p-8 rounded-xl border border-gray-100 shadow-sm transition hover:shadow-md lg:col-span-2">
+            <div class="bg-white p-8 rounded-[1.5rem] shadow-xl shadow-gray-200/60 border border-gray-200 transition hover:shadow-2xl duration-300 lg:col-span-2">
                 <h4 class="text-sm font-bold text-gray-700 mb-6 flex items-center">
                     <span class="w-3 h-3 bg-secondary rounded-full mr-2"></span> Tendencia Mensual <?php echo date('Y'); ?>
                 </h4>
@@ -112,22 +112,22 @@ function jsonData($data) {
         </div>
 
         <div id="reporte-seccion" class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            <div class="bg-white p-8 rounded-xl border border-gray-100 shadow-sm transition hover:shadow-md lg:col-span-1">
+            <div class="bg-white p-8 rounded-[1.5rem] shadow-xl shadow-gray-200/60 border border-gray-200 lg:col-span-1">
                 <h4 class="text-lg font-bold text-gray-800 mb-6">Filtros de Reporte</h4>
                 <form id="reportForm" action="reporte_solicitudes_pdf.php" method="POST" target="_blank" class="space-y-4">
                     <input type="hidden" name="chart_estado_img" id="inputChartEstado">
                     <input type="hidden" name="chart_mes_img" id="inputChartMes">
                     <div>
                         <label class="mb-1 block text-sm font-medium text-gray-700">Fecha Inicio</label>
-                        <input type="date" name="fecha_inicio" class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm">
+                        <input type="date" name="fecha_inicio" class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
                     </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium text-gray-700">Fecha Fin</label>
-                        <input type="date" name="fecha_fin" class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm">
+                        <input type="date" name="fecha_fin" class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
                     </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium text-gray-700">Estado</label>
-                        <select name="estado" class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-white">
+                        <select name="estado" class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
                             <option value="todos">Todos los estados</option>
                             <option value="revision">En Revisi&oacute;n</option>
                             <option value="aprobado">Aprobado</option>
@@ -136,21 +136,21 @@ function jsonData($data) {
                     </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium text-gray-700">Dependencia</label>
-                        <select name="dependencia_id" class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-white">
+                        <select name="dependencia_id" class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
                             <option value="">Todas las dependencias</option>
                             <?php foreach($dependencias as $dep): ?>
                                 <option value="<?php echo $dep['id']; ?>"><?php echo htmlspecialchars($dep['nombre']); ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <button type="submit" class="w-full bg-primary hover:bg-primaryDark text-white font-semibold py-4 rounded-lg shadow-lg mt-4 flex items-center justify-center">
+                    <button type="submit" class="w-full bg-primary hover:bg-primaryDark text-white font-semibold py-4 rounded-xl shadow-lg shadow-primary/20 mt-4 flex items-center justify-center transition-all hover:-translate-y-1 active:scale-95">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-width="2"/></svg>
                         Descargar Reporte
                     </button>
                 </form>
             </div>
 
-            <div class="bg-white p-8 rounded-xl border border-gray-100 shadow-sm transition hover:shadow-md lg:col-span-3 overflow-hidden">
+            <div class="bg-white p-8 rounded-[1.5rem] shadow-xl shadow-gray-200/60 border border-gray-200 lg:col-span-3 overflow-hidden">
                 <div class="flex items-center justify-between mb-8">
                     <h4 class="text-xl font-bold text-gray-800">U&acute;ltimas Solicitudes</h4>
                     <span class="text-xs font-bold bg-primary/5 text-primary px-3 py-1 rounded-full uppercase">Top 10</span>
