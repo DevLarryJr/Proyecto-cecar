@@ -42,37 +42,37 @@ Auth::requireLogin();
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-<?php echo Auth::isAdmin() ? '4' : '2'; ?> gap-8 max-w-<?php echo Auth::isAdmin() ? '7xl' : '4xl'; ?> mx-auto">
             
-            <a href="solicitud.php" class="group bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-2xl transition-all transform hover:-translate-y-2">
-                <div class="w-16 h-16 bg-brand-soft text-brand-main rounded-2xl flex items-center justify-center mb-6 group-hover:bg-gray-900 group-hover:text-white transition-all duration-500 shadow-sm rotate-3 group-hover:rotate-0">
+            <a href="solicitud.php" class="group bg-white p-8 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 hover:shadow-2xl hover:shadow-brand-main/20 transition-all duration-500 transform hover:-translate-y-3">
+                <div class="w-16 h-16 bg-brand-soft text-brand-main rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-main group-hover:text-white transition-all duration-500 shadow-lg shadow-brand-main/10 rotate-3 group-hover:rotate-0">
                     <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2"/></svg>
                 </div>
                 <h2 class="text-2xl font-bold text-gray-800 mb-3">Crear Solicitud</h2>
-                <p class="text-gray-500 text-sm">Inicia un nuevo requerimiento de servicios.</p>
+                <p class="text-gray-500 text-sm leading-relaxed">Inicia un nuevo requerimiento de servicios institucionales.</p>
             </a>
 
-            <a href="solicitudes.php" class="group bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-2xl transition-all transform hover:-translate-y-2">
-                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500 shadow-sm -rotate-3 group-hover:rotate-0">
+            <a href="solicitudes.php" class="group bg-white p-8 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 hover:shadow-2xl hover:shadow-blue-600/20 transition-all duration-500 transform hover:-translate-y-3">
+                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500 shadow-lg shadow-blue-600/10 -rotate-3 group-hover:rotate-0">
                     <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-width="2"/></svg>
                 </div>
                 <h2 class="text-2xl font-bold text-gray-800 mb-3">Mis Solicitudes</h2>
-                <p class="text-gray-500 text-sm">Consulta el estado actual de tus trámites.</p>
+                <p class="text-gray-500 text-sm leading-relaxed">Consulta el historial y estado de todos tus trámites.</p>
             </a>
 
             <?php if (Auth::isAdmin()): ?>
-                <a href="revision.php" class="group bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-2xl transition-all transform hover:-translate-y-2">
-                    <div class="w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-600 group-hover:text-white transition-all duration-500 shadow-sm rotate-3 group-hover:rotate-0">
+                <a href="revision.php" class="group bg-white p-8 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 hover:shadow-2xl hover:shadow-amber-600/20 transition-all duration-500 transform hover:-translate-y-3">
+                    <div class="w-16 h-16 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-600 group-hover:text-white transition-all duration-500 shadow-lg shadow-amber-600/10 rotate-3 group-hover:rotate-0">
                         <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2"/></svg>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-800 mb-3">Panel Revisor</h2>
-                    <p class="text-gray-500 text-sm">Gestiona y aprueba las solicitudes registradas.</p>
+                    <p class="text-gray-500 text-sm leading-relaxed">Gestiona, audita y aprueba solicitudes registradas.</p>
                 </a>
 
-                <a href="dashboard_admin.php" class="group bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-2xl transition-all transform hover:-translate-y-2">
-                    <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 shadow-sm -rotate-3 group-hover:rotate-0">
+                <a href="dashboard_admin.php" class="group bg-white p-8 rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 hover:shadow-2xl hover:shadow-indigo-600/20 transition-all duration-500 transform hover:-translate-y-3">
+                    <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 shadow-lg shadow-indigo-600/10 -rotate-3 group-hover:rotate-0">
                         <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" stroke-width="2"/></svg>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-800 mb-3">Estadísticas</h2>
-                    <p class="text-gray-500 text-sm">Analiza métricas y genera reportes detallados.</p>
+                    <p class="text-gray-500 text-sm leading-relaxed">Analiza métricas globales y genera reportes detallados.</p>
                 </a>
             <?php endif; ?>
 
