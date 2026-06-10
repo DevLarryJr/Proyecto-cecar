@@ -71,8 +71,8 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div class="lg:col-span-8 space-y-10">
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-8 border-b border-gray-50 flex items-center justify-between">
+                <div class="bg-white rounded-3xl shadow-xl shadow-gray-300/60 border border-gray-200 overflow-hidden">
+                    <div class="p-8 border-b border-gray-100 flex items-center justify-between">
                         <h2 class="text-xl font-bold text-gray-800">Informaci&oacute;n del Registro</h2>
                     </div>
                     <div class="p-10">
@@ -80,7 +80,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                             <div>
                                 <label class="text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] block mb-3">Solicitante</label>
                                 <div class="flex items-center">
-                                    <div class="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary font-black text-xl mr-4 shadow-inner">
+                                    <div class="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary font-black text-xl mr-4 shadow-inner border border-primary/10">
                                         <?php echo strtoupper(substr($solicitud['nombre'], 0, 1)); ?>
                                     </div>
                                     <div>
@@ -106,8 +106,8 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                 </div>
 
                 <?php if (!empty($solicitud['servicios_list'])): ?>
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-8 border-b border-gray-50 flex items-center space-x-3">
+                <div class="bg-white rounded-3xl shadow-xl shadow-gray-300/60 border border-gray-200 overflow-hidden">
+                    <div class="p-8 border-b border-gray-100 flex items-center space-x-3">
                         <h2 class="text-xl font-bold text-gray-800">Servicios Requeridos</h2>
                     </div>
                     <div class="overflow-x-auto">
@@ -124,11 +124,11 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                                 <?php foreach ($solicitud['servicios_list'] as $s): ?>
                                 <tr class="hover:bg-gray-50/50 transition-colors">
                                     <td class="px-8 py-6">
-                                        <p class="font-bold text-gray-800 break-words"><?php echo htmlspecialchars($s['servicio']); ?></p>
+                                        <p class="font-bold text-gray-800 break-words group-hover:text-primary"><?php echo htmlspecialchars($s['servicio']); ?></p>
                                         <p class="text-[10px] text-gray-400 font-bold uppercase mt-1 tracking-wider"><?php echo htmlspecialchars($s['centro_costos'] ?? 'General'); ?></p>
                                     </td>
                                     <td class="px-8 py-6 text-center">
-                                        <span class="inline-block px-3 py-1 bg-gray-100 rounded-lg font-black text-gray-600"><?php echo $s['cantidad']; ?></span>
+                                        <span class="inline-block px-3 py-1 bg-gray-50 rounded-lg font-black text-gray-800 border border-gray-100"><?php echo $s['cantidad']; ?></span>
                                     </td>
                                     <td class="px-8 py-6">
                                         <div class="text-xs">
@@ -136,7 +136,7 @@ $currentStatus = ViewHelper::getEstadoConfig($estado);
                                         </div>
                                     </td>
                                     <td class="px-8 py-6 text-right">
-                                        <span class="text-xs font-black text-secondaryDark italic"><?php echo $s['disponibilidad']; ?></span>
+                                        <span class="text-xs font-black text-secondaryDark italic tracking-tighter"><?php echo $s['disponibilidad']; ?></span>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
