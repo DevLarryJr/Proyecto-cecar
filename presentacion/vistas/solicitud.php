@@ -1,9 +1,13 @@
 <?php
 /**
- * solicitud.php — Capa de Presentación
+ * solicitud.php — Capa de Presentación (Formulario Dinámico)
+ * 
+ * Este archivo renderiza el formulario de creación y edición de requerimientos.
+ * Utiliza una interfaz por pasos (1, 2, 3) y una tabla dinámica para los servicios.
  */
 require_once __DIR__ . '/../../negocio/SolicitudController.php';
 
+// Obtención de datos del controlador (maneja ID 0 para nuevo o ID > 0 para edición)
 $data = SolicitudController::prepararFormulario($_GET['id'] ?? 0);
 $id = $data['id'];
 $solicitud = $data['solicitud'];
@@ -15,20 +19,27 @@ $isEdit = $data['isEdit'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $isEdit ? 'Editar Solicitud #' . $id : 'Nueva Solicitud'; ?> - CECAR</title>
+    
+    <!-- Configuración Global + Librerías Externas -->
     <script src="https://cdn.tailwindcss.com"></script>
     <?php ViewHelper::renderTailwindConfig(); ?>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="../img/logoIco.ico" type="image/x-icon">
+    
+    <!-- TomSelect: Para convertir los <select> en buscadores inteligentes ultra-rápidos -->
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+    
     <style>
         body { font-family: 'Inter', sans-serif; }
+        /* Ajustes visuales para TomSelect para que combine con Tailwind */
         .ts-wrapper .ts-control { border-radius: 0.5rem !important; padding: 0.5rem 0.75rem !important; font-size: 0.75rem !important; background-color: #f9fafb !important; min-height: 42px !important; }
         .ts-wrapper.focus .ts-control { border-color: #064c2b !important; box-shadow: 0 0 0 2px rgba(6, 76, 43, 0.1) !important; background-color: #fff !important; }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen text-gray-800 pb-20">
 
+    <!-- Breadcrumb dinámico -->
     <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -48,16 +59,18 @@ $isEdit = $data['isEdit'];
             <p class="text-gray-500 mt-1"><?php echo $isEdit ? 'Actualiza los campos de tu requerimiento.' : 'Completa los campos para procesar tu requerimiento.'; ?></p>
         </div>
 
+        <!-- FORMULARIO: Envío Multipart (permite archivos PDF) -->
         <form action="../../negocio/SolicitudController.php" method="POST" enctype="multipart/form-data" id="solicitudForm" class="bg-white rounded-[2rem] shadow-xl shadow-gray-300/60 border border-gray-200 overflow-hidden">
             <input type="hidden" name="ajax" value="1">
             <input type="hidden" name="id_solicitud" value="<?php echo $id; ?>">
             
-            <!-- Contenedor de Estados AJAX -->
+            <!-- Contenedor para Notificaciones AJAX (Gestiado por ajax-solicitud.js) -->
             <div id="status-container" class="hidden mx-8 mt-8">
                 <div id="status-message" class="text-sm font-medium"></div>
             </div>
             
             <div class="p-8 space-y-10">
+                <!-- SECCIÓN 1: CABECERA -->
                 <section class="animate-card delay-200">
                     <div class="flex items-center mb-6">
                         <div class="w-10 h-10 bg-primary/10 text-primary rounded-full flex items-center justify-center mr-4 font-bold">1</div>
@@ -74,6 +87,7 @@ $isEdit = $data['isEdit'];
                     </div>
                 </section>
 
+                <!-- SECCIÓN 2: TABLA DINÁMICA DE SERVICIOS -->
                 <section class="animate-card delay-300">
                     <div class="flex items-center mb-6">
                         <div class="w-10 h-10 bg-secondary/10 text-secondary rounded-full flex items-center justify-center mr-4 font-bold">2</div>
@@ -81,6 +95,7 @@ $isEdit = $data['isEdit'];
                     </div>
                     <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-white">
                         <div class="overflow-x-auto">
+                            <!-- Esta tabla es renderizada por solicitudes.js -->
                             <table class="w-full text-sm text-left table-fixed min-w-[1200px]">
                                 <thead class="bg-primary text-white text-[10px] uppercase font-bold tracking-wider">
                                     <tr>
@@ -104,6 +119,7 @@ $isEdit = $data['isEdit'];
                     </button>
                 </section>
 
+                <!-- SECCIÓN 3: JUSTIFICACIÓN Y ARCHIVOS -->
                 <section class="animate-card delay-400">
                     <div class="flex items-center mb-6">
                         <div class="w-10 h-10 bg-tertiary/10 text-primary rounded-full flex items-center justify-center mr-4 font-bold">3</div>
@@ -116,6 +132,7 @@ $isEdit = $data['isEdit'];
                         </div>
                         <div>
                             <label class="mb-2 block text-sm font-medium text-gray-700">Documentaci&oacute;n (PDF)</label>
+                            <!-- UI de Subida Personalizada -->
                             <div onclick="document.getElementById('adjunto').click()" class="border-4 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-primary transition-colors bg-gray-50/50 hover:bg-white shadow-inner">
                                 <p class="text-sm font-medium text-gray-600">Haz clic para subir soporte</p>
                                 <p class="text-[10px] font-bold text-green-600 mt-1 uppercase tracking-widest">Máximo 10MB</p>
@@ -127,6 +144,7 @@ $isEdit = $data['isEdit'];
                 </section>
             </div>
 
+            <!-- Acciones Finales -->
             <div class="bg-gray-50 px-8 py-6 border-t border-gray-100 flex justify-end items-center space-x-6">
                 <a href="dashboard.php" class="text-xs font-bold text-red-500 hover:text-red-700 uppercase tracking-widest transition-colors mr-4">Cancelar</a>
                 <button type="submit" class="bg-primary hover:bg-primaryDark text-white font-bold py-4 px-12 rounded-xl shadow-lg shadow-primary/20 transition-all hover:-translate-y-1">
@@ -136,6 +154,7 @@ $isEdit = $data['isEdit'];
         </form>
     </main>
 
+    <!-- Transmisión de variables PHP a JavaScript de forma segura -->
     <script>
         window.IS_EDIT = <?php echo $isEdit ? 'true' : 'false'; ?>;
         window.ITEMS_EDIT = <?php echo json_encode($solicitud['servicios_list'] ?? []); ?>;
@@ -145,6 +164,8 @@ $isEdit = $data['isEdit'];
             if (input.files.length > 0) etiqueta.innerText = "📄 Archivo: " + input.files[0].name;
         }
     </script>
+    
+    <!-- Scripts de Lógica y Comportamiento -->
     <script src="../js/solicitudes.js?v=<?php echo time(); ?>"></script>
     <script src="../js/ajax-solicitud.js?v=<?php echo time(); ?>"></script>
     <script src="../js/validaciones.js?v=<?php echo time(); ?>"></script>

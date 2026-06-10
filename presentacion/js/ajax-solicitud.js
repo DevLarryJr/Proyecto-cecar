@@ -1,3 +1,10 @@
+/**
+ * ajax-solicitud.js — Capa de Comportamiento (Frontend)
+ * 
+ * Gestiona el envío asíncrono del formulario de solicitud y la orquestación 
+ * de los componentes de búsqueda avanzada (TomSelect).
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('solicitudForm');
     const statusContainer = document.getElementById('status-container');
@@ -6,12 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!form) return;
 
+    /**
+     * INTERCEPTOR DE FORMULARIO
+     * Envía los datos vía Fetch API para evitar recargas de página.
+     */
     form.addEventListener('submit', async (e) => {
-        // Interceptamos el envío por defecto del formulario (recarga de la página).
-        // Las validaciones de validaciones.js ocurren simultáneamente.
         e.preventDefault();
 
-        // Limpiar estados previos y mostrar icono de carga en el botón
+        // 1. Reset visual de estados y feedback de carga
         statusContainer.classList.add('hidden');
         submitBtn.disabled = true;
         submitBtn.innerHTML = `
@@ -24,21 +33,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(form);
 
         try {
-            // Utilizamos la API Fetch para enviar los datos al archivo procesador
+            // Envío al controlador en el servidor
             const response = await fetch(form.action, {
                 method: 'POST',
                 body: formData,
-                headers: {
-                    // Cabecera clave para que el servidor (PHP) detecte que es una llamada asíncrona AJAX
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
             });
 
-            // Convertimos la respuesta binaria a un objeto JSON usable
             const result = await response.json();
 
             if (result.success) {
-                // ÉXITO
+                // FEEDBACK POSITIVO
                 statusContainer.className = 'mb-6 p-4 rounded-xl border border-emerald-100 bg-emerald-50 text-emerald-800 animate-fade-in';
                 statusMessage.innerHTML = `
                     <div class="flex items-center">
@@ -46,56 +51,65 @@ document.addEventListener('DOMContentLoaded', () => {
                         <strong>¡Éxito!</strong> ${result.message || 'Redirigiendo...'}
                     </div>`;
 
-                // Redirigir al detalle después de un breve momento
+                // Navegación automática al detalle del nuevo registro
                 setTimeout(() => {
                     window.location.href = `detalle.php?id=${result.id}`;
                 }, 1500);
 
             } else {
-                // ERROR (Validación backend)
+                // MANEJO DE ERRORES (Ej. Validación de campos obligatorios en backend)
                 statusContainer.className = "mb-6 p-4 rounded-xl border border-red-200 bg-red-50 text-red-700 block animate-fade-in";
-                statusMessage.innerHTML = "<strong>Error:</strong><br>" + result.errors.join('<br>');
+                statusMessage.innerHTML = "<strong>Error en la solicitud:</strong><br>" + (result.errors ? result.errors.join('<br>') : 'Error desconocido');
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Enviar Solicitud';
+                submitBtn.textContent = window.IS_EDIT ? 'Actualizar Solicitud' : 'Enviar Solicitud';
             }
 
         } catch (error) {
-            console.error('Error AJAX:', error);
+            console.error('[AJAX Fatal Error]', error);
             statusContainer.className = "mb-6 p-4 rounded-xl border border-red-200 bg-red-50 text-red-700 block animate-fade-in";
-            statusMessage.textContent = "Ocurrió un problema de conexión al enviar la solicitud.";
+            statusMessage.textContent = "Error de red: No se pudo contactar con el servidor institucional.";
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Enviar Solicitud';
+            submitBtn.textContent = window.IS_EDIT ? 'Actualizar Solicitud' : 'Enviar Solicitud';
         }
     });
 });
 
-/**
- * Módulo de Centros de Costo (Módulo 2)
- * Carga dinámica de centros desde SolicitudAjaxController.php
+/** 
+ * GESTIÓN DE CATÁLOGOS DINÁMICOS
+ * Almacena los Centros de Costo, Funciones y Rubros en memoria para búsquedas instantáneas.
  */
-document.addEventListener('DOMContentLoaded', function () {
-    cargarCatalogos();
-});
+let catalogosGlobal = { centrosCosto: [], funciones: [], rubros: [] };
 
-let catalogosGlobal = {
-    centrosCosto: [],
-    funciones: [],
-    rubros: []
-};
+document.addEventListener('DOMContentLoaded', cargarCatalogos);
 
+/** Consume los datos desde el SolicitudAjaxController */
 async function obtenerCatalogo(action) {
     const respuesta = await fetch(`../../negocio/SolicitudAjaxController.php?action=${action}`);
     const resultado = await respuesta.json();
     return resultado.success ? resultado.data : [];
 }
 
+/** Descarga todos los catálogos necesarios para la sesión actual */
+async function cargarCatalogos() {
+    try {
+        catalogosGlobal.centrosCosto = await obtenerCatalogo('centros_costo');
+        catalogosGlobal.funciones = await obtenerCatalogo('funciones');
+        catalogosGlobal.rubros = await obtenerCatalogo('rubros');
+        
+        // Inyectar datos en las filas que ya existen (Modo Edición)
+        llenarCatalogosEnFilas();
+    } catch (error) {
+        console.error('[Catalogo] Error al precargar datos maestros:', error);
+    }
+}
+
 /**
- * Inicializa TomSelect de forma eficiente usando datos directos.
+ * MOTOR DE BÚSQUEDA AVANZADA (TomSelect)
+ * Convierte un <select> estándar en un buscador potente con autocompletado por nombre y código.
  */
 function initTomSelect(element, datos = [], settings = {}) {
     if (!element || element.tomselect) return;
 
-    // Aseguramos que datos sea un array y limpiamos posibles nulos
     const listaLimpia = (Array.isArray(datos) ? datos : []).filter(item => item && typeof item === 'object');
 
     const config = {
@@ -103,134 +117,75 @@ function initTomSelect(element, datos = [], settings = {}) {
         valueField: 'id',
         labelField: 'nombre',
         searchField: ['nombre', 'codigo'],
-        placeholder: "Buscar...",
+        placeholder: "Escriba código o nombre...",
         allowEmptyOption: true,
         maxOptions: 2000,
         maxItems: 1,
         dropdownParent: 'body',
         render: {
-            option: function(item, escape) {
-                const cod = item.codigo ? escape(item.codigo) : '---';
-                const nom = item.nombre ? escape(item.nombre) : 'Sin nombre';
-                return `<div><span class="font-bold">${cod}</span> - ${nom}</div>`;
-            },
-            item: function(item, escape) {
-                const cod = item.codigo ? escape(item.codigo) : '---';
-                const nom = item.nombre ? escape(item.nombre) : 'Sin nombre';
-                return `<div class="break-words whitespace-normal text-[10px] leading-tight"><span class="font-bold text-primary">${cod}</span> - ${nom}</div>`;
-            }
+            option: (item, esc) => `<div><span class="font-bold text-primary">${esc(item.codigo || '---')}</span> - ${esc(item.nombre)}</div>`,
+            item: (item, esc) => `<div class="text-[10px]"><span class="font-bold text-primary">${esc(item.codigo || '---')}</span> - ${esc(item.nombre)}</div>`
         },
-        onChange: function() {
-            element.dispatchEvent(new Event('change', { bubbles: true }));
-        }
+        onChange: () => element.dispatchEvent(new Event('change', { bubbles: true }))
     };
 
-    try {
-        const mergedConfig = Object.assign({}, config, settings);
-        return new TomSelect(element, mergedConfig);
-    } catch (err) {
-        console.warn('[TomSelect Web] Error al instanciar:', err.message);
-        return null;
-    }
+    try { return new TomSelect(element, Object.assign({}, config, settings)); } 
+    catch (err) { return null; }
 }
 
-function llenarSelect(select, datos, textoInicial, tsSettings = {}) {
+/** Organiza la inserción de datos en los selectores inteligentes */
+function llenarSelect(select, datos, textoInicial) {
     if (!select) return;
-    
-    // Si ya existe una instancia de TomSelect, la destruimos
-    if (select.tomselect) {
-        select.tomselect.destroy();
-    }
+    if (select.tomselect) select.tomselect.destroy();
 
-    // Limpiar el select y poner la opción por defecto
     select.innerHTML = `<option value="">${textoInicial}</option>`;
-
-    // Usar un pequeño retardo para evitar conflictos de renderizado
     setTimeout(() => {
-        const ts = initTomSelect(select, datos, tsSettings);
-        
+        const ts = initTomSelect(select, datos);
         if (ts) {
-            const valorGuardado = select.dataset.selected || select.value;
-            if (valorGuardado && valorGuardado !== "undefined") {
-                ts.setValue(String(valorGuardado));
-            }
+            const valor = select.dataset.selected || select.value;
+            if (valor) ts.setValue(String(valor));
         }
     }, 10);
 }
 
-async function cargarCatalogos() {
-    try {
-        console.log('[Catalogo] Descargando datos...');
-        
-        catalogosGlobal.centrosCosto = await obtenerCatalogo('centros_costo');
-        console.log(`[Catalogo] CC cargados: ${catalogosGlobal.centrosCosto.length}`);
-
-        catalogosGlobal.funciones = await obtenerCatalogo('funciones');
-        console.log(`[Catalogo] Funciones cargadas: ${catalogosGlobal.funciones.length}`);
-
-        catalogosGlobal.rubros = await obtenerCatalogo('rubros');
-        console.log(`[Catalogo] Rubros cargados: ${catalogosGlobal.rubros.length}`);
-
-        llenarCatalogosEnFilas();
-        console.log('[Catalogo] Proceso completado.');
-
-    } catch (error) {
-        console.error('[Catalogo] Error crítico cargando catálogos:', error);
-    }
-}
-
+/** Itera por todas las filas de la tabla de servicios para inicializar sus buscadores */
 function llenarCatalogosEnFilas(container = document) {
-    // Solo procesar si el contenedor existe
     if (!container) return;
-
-    // Llenar catálogos usando el contenedor para mayor eficiencia
-    container.querySelectorAll('.select-cc').forEach(select => {
-        llenarSelect(select, catalogosGlobal.centrosCosto, 'Seleccione...');
-    });
-
-    container.querySelectorAll('.select-rubro').forEach(select => {
-        llenarSelect(select, catalogosGlobal.rubros, 'Seleccione...');
-    });
-
-    container.querySelectorAll('.select-funcion').forEach(select => {
-        llenarSelect(select, catalogosGlobal.funciones, 'Seleccione...');
-    });
+    container.querySelectorAll('.select-cc').forEach(s => llenarSelect(s, catalogosGlobal.centrosCosto, 'Seleccione CC...'));
+    container.querySelectorAll('.select-rubro').forEach(s => llenarSelect(s, catalogosGlobal.rubros, 'Seleccione Rubro...'));
+    container.querySelectorAll('.select-funcion').forEach(s => llenarSelect(s, catalogosGlobal.funciones, 'Seleccione Función...'));
 }
 
 window.llenarCatalogosEnFilas = llenarCatalogosEnFilas;
 
+/**
+ * SINCRONIZACIÓN REACTIVA
+ * Escucha cambios en los selectores para autocompletar campos de CÓDIGO y NOMBRES ocultos.
+ */
 document.addEventListener('change', function (e) {
     const target = e.target;
     const fila = target.closest('tr');
     if (!fila) return;
 
-    const idValue = target.value;
-    let itemData = null;
+    const val = target.value;
+    let item = null;
 
-    // 1. Sincronización: Centro de Costos
+    // Sincronizar Centro de Costos
     if (target.classList.contains('select-cc')) {
-        itemData = catalogosGlobal.centrosCosto.find(i => String(i.id) === String(idValue));
-        const codigoInput = fila.querySelector('.codigo-cc');
-        const hiddenNombre = fila.querySelector('.cc-nombre-hidden');
-        if (codigoInput) codigoInput.value = itemData ? (itemData.codigo || '') : '';
-        if (hiddenNombre) hiddenNombre.value = itemData ? (itemData.nombre || '') : '';
+        item = catalogosGlobal.centrosCosto.find(i => String(i.id) === String(val));
+        fila.querySelector('.codigo-cc').value = item ? (item.codigo || '') : '';
+        fila.querySelector('.cc-nombre-hidden').value = item ? (item.nombre || '') : '';
     }
-
-    // 2. Sincronización: Función
+    // Sincronizar Función
     if (target.classList.contains('select-funcion')) {
-        itemData = catalogosGlobal.funciones.find(i => String(i.id) === String(idValue));
-        const codigoInput = fila.querySelector('.codigo-funcion');
-        const hiddenNombre = fila.querySelector('.funcion-nombre-hidden');
-        if (codigoInput) codigoInput.value = itemData ? (itemData.codigo || '') : '';
-        if (hiddenNombre) hiddenNombre.value = itemData ? (itemData.nombre || '') : '';
+        item = catalogosGlobal.funciones.find(i => String(i.id) === String(val));
+        fila.querySelector('.codigo-funcion').value = item ? (item.codigo || '') : '';
+        fila.querySelector('.funcion-nombre-hidden').value = item ? (item.nombre || '') : '';
     }
-
-    // 3. Sincronización: Rubro
+    // Sincronizar Rubro
     if (target.classList.contains('select-rubro')) {
-        itemData = catalogosGlobal.rubros.find(i => String(i.id) === String(idValue));
-        const codigoRubro = fila.querySelector('.codigo-rubro');
-        const hiddenNombre = fila.querySelector('.rubro-nombre-hidden');
-        if (codigoRubro) codigoRubro.value = itemData ? (itemData.codigo || '') : '';
-        if (hiddenNombre) hiddenNombre.value = itemData ? (itemData.nombre || '') : '';
+        item = catalogosGlobal.rubros.find(i => String(i.id) === String(val));
+        fila.querySelector('.codigo-rubro').value = item ? (item.codigo || '') : '';
+        fila.querySelector('.rubro-nombre-hidden').value = item ? (item.nombre || '') : '';
     }
 });
