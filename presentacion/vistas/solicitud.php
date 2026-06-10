@@ -48,7 +48,7 @@ $isEdit = $data['isEdit'];
             <p class="text-gray-500 mt-1"><?php echo $isEdit ? 'Actualiza los campos de tu requerimiento.' : 'Completa los campos para procesar tu requerimiento.'; ?></p>
         </div>
 
-        <form action="../../negocio/SolicitudController.php" method="POST" enctype="multipart/form-data" id="solicitudForm" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <form action="../../negocio/SolicitudController.php" method="POST" enctype="multipart/form-data" id="solicitudForm" class="bg-white rounded-[2rem] shadow-xl shadow-gray-300/60 border border-gray-200 overflow-hidden">
             <input type="hidden" name="ajax" value="1">
             <input type="hidden" name="id_solicitud" value="<?php echo $id; ?>">
             
@@ -122,8 +122,8 @@ $isEdit = $data['isEdit'];
             </div>
 
             <div class="bg-gray-50 px-8 py-6 border-t border-gray-100 flex justify-end items-center space-x-6">
-                <a href="dashboard.php" class="text-sm font-semibold text-gray-500">Cancelar</a>
-                <button type="submit" class="bg-primary hover:bg-primaryDark text-white font-bold py-3 px-10 rounded-lg shadow-lg">
+                <a href="dashboard.php" class="text-xs font-bold text-red-500 hover:text-red-700 uppercase tracking-widest transition-colors mr-4">Cancelar</a>
+                <button type="submit" class="bg-primary hover:bg-primaryDark text-white font-bold py-4 px-12 rounded-xl shadow-lg shadow-primary/20 transition-all hover:-translate-y-1">
                     <?php echo $isEdit ? 'Actualizar Solicitud' : 'Enviar Solicitud'; ?>
                 </button>
             </div>
